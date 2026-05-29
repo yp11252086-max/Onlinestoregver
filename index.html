@@ -360,6 +360,26 @@
             background-color: #ffffff;
         }
 
+        /* Embedded Custom Native Success Confirmation Notification Screen Block */
+        .success-announcement-overlay {
+            display: none;
+            text-align: center;
+            padding: 30px 10px;
+        }
+
+        .success-announcement-overlay h3 {
+            font-family: Georgia, serif;
+            color: #c95245;
+            font-size: 1.6rem;
+            margin-bottom: 10px;
+        }
+
+        .success-announcement-overlay p {
+            color: #5c5752;
+            font-size: 0.95rem;
+            margin-bottom: 25px;
+        }
+
         /* Button Framework styles */
         .btn {
             display: block;
@@ -481,42 +501,51 @@
             <button class="close-cart-btn" onclick="toggleCart()">✕</button>
         </div>
 
-        <div class="cart-items-list" id="cart-items-container">
-            <p style="color: #8c857e; text-align: center; margin-top: 20px;">Your cart is empty.</p>
-        </div>
+        <div id="cart-main-wrapper">
+            <div class="cart-items-list" id="cart-items-container">
+                <p style="color: #8c857e; text-align: center; margin-top: 20px;">Your cart is empty.</p>
+            </div>
 
-        <div class="cart-summary">
-            <div class="cart-total-row">
-                <span>Subtotal:</span>
-                <span id="cart-total-display">0 NTD</span>
+            <div class="cart-summary">
+                <div class="cart-total-row">
+                    <span>Subtotal:</span>
+                    <span id="cart-total-display">0 NTD</span>
+                </div>
+            </div>
+
+            <div class="order-form-container" id="order-form-container">
+                <h4 class="form-title">Place Your Order</h4>
+                
+                <form id="checkout-form-endpoint" action="https://formspree.io/f/xbdbbrqd" method="POST">
+                    
+                    <input type="hidden" id="form-cart-details" name="ordered_items" value="">
+                    <input type="hidden" id="form-total-price" name="total_amount" value="">
+
+                    <div class="form-group">
+                        <label for="name">Your Full Name</label>
+                        <input type="text" id="name" name="customer_name" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="customer_email" placeholder="stay@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Special Delivery Notes (Optional)</label>
+                        <textarea id="message" name="customer_notes" rows="3" placeholder="Leave any instructions here..."></textarea>
+                    </div>
+
+                    <button type="submit" id="submit-btn-text" class="btn checkout-btn">Summon Your Order</button>
+                </form>
             </div>
         </div>
 
-        <div class="order-form-container" id="order-form-container">
-            <h4 class="form-title">Place Your Order</h4>
-            
-            <form action="https://formspree.io/f/xbdbbrqd" method="POST">
-                
-                <input type="hidden" id="form-cart-details" name="ordered_items" value="">
-                <input type="hidden" id="form-total-price" name="total_amount" value="">
-
-                <div class="form-group">
-                    <label for="name">Your Full Name</label>
-                    <input type="text" id="name" name="customer_name" placeholder="John Doe" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address</label>
-                    <input type="email" id="email" name="customer_email" placeholder="stay@example.com" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Special Delivery Notes (Optional)</label>
-                    <textarea id="message" name="customer_notes" rows="3" placeholder="Leave any instructions here..."></textarea>
-                </div>
-
-                <button type="submit" class="btn checkout-btn">Summon Your Order</button>
-            </form>
+        <div class="success-announcement-overlay" id="success-announcement-view">
+            <span>🎉</span>
+            <h3>Thank You!</h3>
+            <p>Your order has been submitted successfully. Crystal will check your order note details shortly!</p>
+            <button class="btn" onclick="resetAndCloseCart()">Return to Shop</button>
         </div>
     </div>
 
@@ -533,6 +562,10 @@
         }
 
         function addToCart(productName, price) {
+            // Force reset success view back to item view if they add more prints later
+            document.getElementById('cart-main-wrapper').style.display = 'block';
+            document.getElementById('success-announcement-view').style.display = 'none';
+
             const existingItem = cart.find(item => item.name === productName);
             
             if (existingItem) {
@@ -597,8 +630,60 @@
             hiddenCartDetails.value = descriptiveManifest;
             hiddenTotalAmount.value = `${totalPrice} NTD`;
         }
+
+        // Intercept standard form redirections and run fetch post processes
+        const checkoutForm = document.getElementById('checkout-form-endpoint');
+        
+        checkoutForm.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevents page reload or offsite navigation redirects
+            
+            const submitButton = document.getElementById('submit-btn-text');
+            submitButton.innerText = "Sending Order...";
+            submitButton.disabled = true;
+
+            const formData = new FormData(checkoutForm);
+
+            fetch(checkoutForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Hide cart and open custom thank you confirmation card block
+                    document.getElementById('cart-main-wrapper').style.display = 'none';
+                    document.getElementById('success-announcement-view').style.display = 'block';
+                } else {
+                    alert("Oops! There was a problem submitting your form. Please verify your link.");
+                    submitButton.innerText = "Summon Your Order";
+                    submitButton.disabled = false;
+                }
+            })
+            .catch(error => {
+                alert("Submission failed. Please check network connection settings.");
+                submitButton.innerText = "Summon Your Order";
+                submitButton.disabled = false;
+            });
+        });
+
+        function resetAndCloseCart() {
+            // Wipe data state arrays, update UI counters, flip back view layers
+            cart = [];
+            updateCartUI();
+            
+            document.getElementById('checkout-form-endpoint').reset();
+            const submitButton = document.getElementById('submit-btn-text');
+            submitButton.innerText = "Summon Your Order";
+            submitButton.disabled = false;
+
+            document.getElementById('cart-main-wrapper').style.display = 'block';
+            document.getElementById('success-announcement-view').style.display = 'none';
+            
+            toggleCart();
+        }
     </script>
 </body>
 </html>
-
        

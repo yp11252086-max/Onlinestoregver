@@ -175,6 +175,64 @@
             flex-grow: 1;
         }
 
+        /* Info Section at the bottom */
+        .info-card {
+            background: #ffffff;
+            border: 1px solid #eae6e1;
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 50px;
+            box-shadow: 0 4px 20px rgba(160, 150, 140, 0.04);
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 15px;
+        }
+
+        .info-block h4 {
+            color: #c95245;
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+            font-family: Georgia, serif;
+        }
+
+        .info-block p, .info-block a {
+            font-size: 0.9rem;
+            color: #5c5752;
+            text-decoration: none;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .social-btn {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .youtube-btn {
+            background-color: #e63946;
+            color: #ffffff !important;
+        }
+        .youtube-btn:hover { background-color: #cb2d39; }
+
+        .instagram-btn {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: #ffffff !important;
+        }
+        .instagram-btn:hover { opacity: 0.9; }
+
         /* Interactive Slide-out Shopping Cart Sidebar Drawer */
         .cart-sidebar {
             position: fixed;
@@ -377,7 +435,7 @@
 
             <div class="product-card">
                 <div class="product-image-container">
-                    <img src="image_e42d6.jpg" alt="Seungmin in purple mist">
+                    <img src="image_e4a2d6.jpg" alt="Seungmin in purple mist">
                 </div>
                 <div>
                     <h3 class="product-title">The soft singer -- Seungmin</h3>
@@ -389,6 +447,32 @@
                 <button class="btn" onclick="addToCart('The soft singer -- Seungmin', 250)">Add to Cart</button>
             </div>
         </div>
+
+        <div class="info-card">
+            <h3 style="font-family: Georgia, serif; color: #2d2d2d; border-bottom: 1px solid #f0ede9; padding-bottom: 10px;">About the Shop & Artist</h3>
+            <div class="info-grid">
+                <div class="info-block">
+                    <h4>Contact Information</h4>
+                    <p><strong>Name:</strong> Crystal</p>
+                    <p><strong>Email:</strong> <a href="mailto:yp11252086@yphs.tp.edu.tw" style="color: #c95245; text-decoration: underline;">yp11252086@yphs.tp.edu.tw</a></p>
+                </div>
+                
+                <div class="info-block">
+                    <h4>About Stray Kids</h4>
+                    <p>Stray Kids (SKZ) is a global South Korean boy band formed by JYP Entertainment. Known for their unique self-producing style, intense choreography, and powerful music.</p>
+                </div>
+
+                <div class="info-block">
+                    <h4>Official SKZ Channels</h4>
+                    <p>Follow their official journeys directly on social media networks:</p>
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@StrayKids" target="_blank" class="social-btn youtube-btn">🎬 YouTube</a>
+                        <a href="https://www.instagram.com/realstraykids/" target="_blank" class="social-btn instagram-btn">📸 Instagram</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <div class="cart-sidebar" id="cart-sidebar">
@@ -437,7 +521,7 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 SKZ Goods. Built for learning web design.<br>Kpop goods online store. NTD is the displayed currency.</p>
+        <p>&copy; 2026 SKZ Goods. Built by Crystal for learning web design.<br>Kpop goods online store. NTD is the displayed currency.</p>
     </footer>
 
     <script>
@@ -516,3 +600,5 @@
     </script>
 </body>
 </html>
+
+       

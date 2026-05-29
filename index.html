@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Mystical Vault | Magical Crystals</title>
     <style>
-        /* Basic Reset and Fonts */
+        /* Modern Design System */
         * {
             margin: 0;
             padding: 0;
@@ -14,52 +14,97 @@
         }
 
         body {
-            background-color: #f4f3f7;
+            background-color: #f8f7fa;
             color: #333;
             line-height: 1.6;
         }
 
-        /* Header / Navigation */
+        /* Navigation Bar with Floating Cart Button */
+        nav {
+            background-color: #2e1a47;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        nav .logo {
+            color: #dfc5fe;
+            font-family: Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .cart-toggle-btn {
+            background: #6d28d9;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+
+        .cart-toggle-btn:hover {
+            background: #5b21b6;
+        }
+
+        #cart-count {
+            background: #ef4444;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+        }
+
+        /* Hero Banner */
         header {
-            background-color: #2e1a47; /* Mystical deep purple */
+            background: linear-gradient(135deg, #2e1a47 0%, #1e1130 100%);
             color: #fff;
-            padding: 40px 20px;
+            padding: 60px 20px;
             text-align: center;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
 
         header h1 {
             color: #dfc5fe;
-            margin-bottom: 5px;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
             font-family: Georgia, serif;
-            letter-spacing: 1px;
         }
 
         header p {
             color: #bfa3e0;
-            font-size: 1rem;
+            font-size: 1.1rem;
         }
 
-        /* Main Container */
+        /* Main Container Layout */
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 40px auto;
             padding: 0 20px;
         }
 
         .section-title {
             text-align: center;
-            margin: 40px 0 20px 0;
+            margin-bottom: 40px;
             color: #2e1a47;
             font-family: Georgia, serif;
+            font-size: 2rem;
         }
 
-        /* Product Grid */
+        /* Product Grid Layout */
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
-            margin-bottom: 20px;
         }
 
         .product-card {
@@ -67,18 +112,18 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            text-align: center;
-            padding: 25px;
-            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
             border: 1px solid #e1dbe9;
+            transition: transform 0.2s;
         }
 
         .product-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
         }
 
-        /* Image Container Styling */
         .product-image-container {
             width: 100%;
             height: 220px;
@@ -96,8 +141,8 @@
 
         .product-title {
             font-size: 1.3rem;
-            margin-bottom: 8px;
             color: #2e1a47;
+            margin-bottom: 5px;
         }
 
         .product-price {
@@ -111,77 +156,146 @@
             font-size: 0.9rem;
             color: #555;
             margin-bottom: 20px;
-            text-align: left;
             border-top: 1px solid #eee;
             padding-top: 15px;
+            flex-grow: 1;
         }
 
-        /* Order Form Section */
-        .order-section {
-            background: #fff;
-            max-width: 600px;
-            margin: 60px auto 0 auto;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border: 1px solid #e1dbe9;
+        /* Interactive Shopping Cart Drawer Sidebar */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px; /* Hidden by default */
+            width: 400px;
+            height: 100%;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            z-index: 200;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            padding: 25px;
+        }
+
+        .cart-sidebar.open {
+            right: 0; /* Slide out effect */
+        }
+
+        .cart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .close-cart-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        .cart-items-list {
+            flex-grow: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #f1f1f1;
+            font-size: 0.95rem;
+        }
+
+        .remove-item-btn {
+            background: none;
+            border: none;
+            color: #ef4444;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .cart-summary {
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+            margin-bottom: 20px;
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2e1a47;
+            margin-bottom: 15px;
+        }
+
+        /* Order Form Fields */
+        .order-form-container {
+            display: none; /* Hidden until items are in cart */
+            border-top: 2px dashed #e1dbe9;
+            padding-top: 20px;
+            overflow-y: auto;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 5px;
             font-weight: 600;
-            font-size: 0.9rem;
-            color: #2e1a47;
+            font-size: 0.85rem;
         }
 
-        .form-group input, 
-        .form-group select, 
-        .form-group textarea {
+        .form-group input, .form-group textarea {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ccc;
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 0.9rem;
         }
 
-        .form-group input:focus, 
-        .form-group select:focus, 
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #6d28d9;
-            box-shadow: 0 0 5px rgba(109, 40, 217, 0.2);
-        }
-
-        /* Buttons */
+        /* Shared Button Styles */
         .btn {
-            display: inline-block;
+            display: block;
             background-color: #6d28d9;
             color: white;
-            padding: 12px 24px;
+            padding: 12px;
             border: none;
             border-radius: 6px;
             font-size: 1rem;
             cursor: pointer;
             text-decoration: none;
-            width: 100%;
-            transition: background-color 0.2s;
+            text-align: center;
             font-weight: bold;
+            width: 100%;
+            transition: background 0.2s;
         }
 
         .btn:hover {
             background-color: #5b21b6;
         }
 
+        .checkout-btn {
+            background-color: #10b981;
+        }
+        .checkout-btn:hover {
+            background-color: #059669;
+        }
+
         /* Footer */
         footer {
             text-align: center;
             padding: 40px;
-            margin-top: 40px;
+            margin-top: 60px;
             color: #777;
             font-size: 0.85rem;
             background-color: #e5e1ec;
@@ -190,64 +304,94 @@
 </head>
 <body>
 
+    <nav>
+        <div class="logo">The Mystical Vault</div>
+        <button class="cart-toggle-btn" onclick="toggleCart()">
+            🛒 Cart <span id="cart-count">0</span>
+        </button>
+    </nav>
+
     <header>
-        <h1>The Mystical Vault</h1>
-        <p>Authentic, charged crystals and enchanted artifacts for your journey.</p>
+        <h1>Magical Crystals &amp; Artifacts</h1>
+        <p>Curated cosmic tools to bring harmony, wealth, and energy into your space.</p>
     </header>
 
     <div class="container">
+        <h2 class="section-title">Explore Our Vault</h2>
         
-        <h2 class="section-title">Magical Crystals &amp; Artifacts</h2>
         <div class="product-grid">
-            
             <div class="product-card">
                 <div class="product-image-container">
-                    <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?auto=format&amp;fit=crop&amp;w=500&amp;q=80" alt="Celestial Amethyst Sphere">
+                    <img src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?w=500" alt="Celestial Amethyst Sphere">
                 </div>
-                <h3 class="product-title">Celestial Amethyst Sphere</h3>
-                <div class="product-price">$45.00</div>
-                <p class="product-description">
-                    <strong>Properties:</strong> Calm, Intuition, &amp; Deep Sleep.<br><br>
-                    This deep purple Amethyst sphere has been polished to perfection. Place it on your nightstand to ward off bad dreams, enhance your natural intuition, and channel tranquil energy throughout your room.
-                </p>
-                <a href="#order-form" class="btn">Order Now</a>
+                <div>
+                    <h3 class="product-title">Celestial Amethyst Sphere</h3>
+                    <div class="product-price">$45.00</div>
+                    <p class="product-description">
+                        <strong>Properties:</strong> Calm, Intuition, &amp; Deep Sleep.<br><br>
+                        This deep purple Amethyst sphere helps ward off bad dreams, enhance intuition, and channel tranquil energy.
+                    </p>
+                </div>
+                <button class="btn" onclick="addToCart('Celestial Amethyst Sphere', 45.00)">Add to Cart</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image-container">
-                    <img src="https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?auto=format&amp;fit=crop&amp;w=500&amp;q=80" alt="Raw Starlight Quartz">
+                    <img src="https://images.unsplash.com/photo-1615485290382-441e4d049cb5?w=500" alt="Raw Starlight Quartz">
                 </div>
-                <h3 class="product-title">Raw Starlight Quartz</h3>
-                <div class="product-price">$38.00</div>
-                <p class="product-description">
-                    <strong>Properties:</strong> Amplification, Clarity, &amp; Focus.<br><br>
-                    A beautiful, untouched cluster of Clear Quartz. Known as the "Master Healer," this crystal amplifies the magical properties of any other crystals nearby and clears away mental fog during intense study sessions.
-                </p>
-                <a href="#order-form" class="btn">Order Now</a>
+                <div>
+                    <h3 class="product-title">Raw Starlight Quartz</h3>
+                    <div class="product-price">$38.00</div>
+                    <p class="product-description">
+                        <strong>Properties:</strong> Amplification, Clarity, &amp; Focus.<br><br>
+                        A beautiful cluster of Clear Quartz. It clears away mental fog during intense study sessions.
+                    </p>
+                </div>
+                <button class="btn" onclick="addToCart('Raw Starlight Quartz', 38.00)">Add to Cart</button>
             </div>
 
             <div class="product-card">
                 <div class="product-image-container">
-                    <img src="https://images.unsplash.com/photo-1614362141505-df8576483424?auto=format&amp;fit=crop&amp;w=500&amp;q=80" alt="Solar Pyrite Cluster">
+                    <img src="https://images.unsplash.com/photo-1551244072-5d12893278ab?w=500" alt="Solar Pyrite Cluster">
                 </div>
-                <h3 class="product-title">Solar Pyrite Cluster</h3>
-                <div class="product-price">$29.00</div>
-                <p class="product-description">
-                    <strong>Properties:</strong> Wealth, Protection, &amp; Motivation.<br><br>
-                    Commonly known as "Fool's Gold," Pyrite is a powerful shield against negative energy. Its glittering, metallic structure stimulates a flow of wealth, good luck, and creative confidence to whoever keeps it close.
-                </p>
-                <a href="#order-form" class="btn">Order Now</a>
+                <div>
+                    <h3 class="product-title">Solar Pyrite Cluster</h3>
+                    <div class="product-price">$29.00</div>
+                    <p class="product-description">
+                        <strong>Properties:</strong> Wealth, Protection, &amp; Motivation.<br><br>
+                        Commonly known as "Fool's Gold," Pyrite stimulates a flow of wealth, luck, and creative confidence.
+                    </p>
+                </div>
+                <button class="btn" onclick="addToCart('Solar Pyrite Cluster', 29.00)">Add to Cart</button>
             </div>
+        </div>
+    </div>
 
+    <div class="cart-sidebar" id="cart-sidebar">
+        <div class="cart-header">
+            <h3>Your Shopping Cart</h3>
+            <button class="close-cart-btn" onclick="toggleCart()">✕</button>
         </div>
 
-        <div class="order-section" id="order-form">
-            <h2 class="section-title">Summon Your Order</h2>
-            
+        <div class="cart-items-list" id="cart-items-container">
+            <p style="color: #aaa; text-align: center; margin-top: 20px;">Your cart is empty.</p>
+        </div>
+
+        <div class="cart-summary">
+            <div class="cart-total-row">
+                <span>Total:</span>
+                <span id="cart-total-display">$0.00</span>
+            </div>
+        </div>
+
+        <div class="order-form-container" id="order-form-container">
             <form action="https://formspree.io/f/mojbbava" method="POST">
                 
+                <input type="hidden" id="form-cart-details" name="ordered_items" value="">
+                <input type="hidden" id="form-total-price" name="total_amount" value="">
+
                 <div class="form-group">
-                    <label for="name">Your Full Name</label>
+                    <label for="name">Your Name</label>
                     <input type="text" id="name" name="customer_name" placeholder="Luna Lovegood" required>
                 </div>
 
@@ -257,36 +401,92 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="product">Select Your Artifact</label>
-                    <select id="product" name="ordered_product" required>
-                        <option value="" disabled selected>Choose a crystal...</option>
-                        <option value="Celestial Amethyst Sphere - $45.00">Celestial Amethyst Sphere - $45.00</option>
-                        <option value="Raw Starlight Quartz - $38.00">Raw Starlight Quartz - $38.00</option>
-                        <option value="Solar Pyrite Cluster - $29.00">Solar Pyrite Cluster - $29.00</option>
-                    </select>
+                    <label for="message">Delivery Notes or Intentions</label>
+                    <textarea id="message" name="customer_notes" rows="2" placeholder="Any requests?"></textarea>
                 </div>
 
-                <div class="form-group">
-                    <label for="quantity">Quantity</label>
-                    <input type="number" id="quantity" name="quantity" min="1" max="10" value="1" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="message">Special Requests or Intentions</label>
-                    <textarea id="message" name="message" rows="4" placeholder="Let us know if you want your crystal charged under a specific lunar phase!"></textarea>
-                </div>
-
-                <input type="text" name="_gotcha" style="display:none">
-
-                <button type="submit" class="btn">Submit Order</button>
+                <button type="submit" class="btn checkout-btn">Place Your Order</button>
             </form>
         </div>
-
     </div>
 
     <footer>
-        <p>&copy; 2026 The Mystical Vault. Built for learning web design.</p>
+        <p>&copy; 2026 The Mystical Vault. Built for learning advanced front-end web design.</p>
     </footer>
 
+    <script>
+        let cart = [];
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            sidebar.classList.toggle('open');
+        }
+
+        function addToCart(productName, price) {
+            const existingItem = cart.find(item => item.name === productName);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ name: productName, price: price, quantity: 1 });
+            }
+            
+            updateCartUI();
+            document.getElementById('cart-sidebar').classList.add('open');
+        }
+
+        function removeFromCart(productName) {
+            cart = cart.filter(item => item.name !== productName);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const itemsContainer = document.getElementById('cart-items-container');
+            const cartCountElement = document.getElementById('cart-count');
+            const totalDisplay = document.getElementById('cart-total-display');
+            const formContainer = document.getElementById('order-form-container');
+            
+            const hiddenCartDetails = document.getElementById('form-cart-details');
+            const hiddenTotalAmount = document.getElementById('form-total-price');
+
+            itemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = '<p style="color: #aaa; text-align: center; margin-top: 20px;">Your cart is empty.</p>';
+                cartCountElement.innerText = '0';
+                totalDisplay.innerText = '$0.00';
+                formContainer.style.display = 'none';
+                return;
+            }
+
+            let totalCount = 0;
+            let totalPrice = 0;
+            let descriptiveManifest = '';
+
+            cart.forEach(item => {
+                totalCount += item.quantity;
+                totalPrice += (item.price * item.quantity);
+                descriptiveManifest += `${item.name} (Qty: ${item.quantity}) | `;
+
+                const itemRow = document.createElement('div');
+                itemRow.className = 'cart-item';
+                itemRow.innerHTML = `
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        <small>$${item.price.toFixed(2)} x ${item.quantity}</small>
+                    </div>
+                    <button class="remove-item-btn" onclick="removeFromCart('${item.name}')">Remove</button>
+                `;
+                itemsContainer.appendChild(itemRow);
+            });
+
+            cartCountElement.innerText = totalCount;
+            totalDisplay.innerText = `$${totalPrice.toFixed(2)}`;
+            formContainer.style.display = 'block';
+
+            hiddenCartDetails.value = descriptiveManifest;
+            hiddenTotalAmount.value = `$${totalPrice.toFixed(2)}`;
+        }
+    </script>
 </body>
 </html>

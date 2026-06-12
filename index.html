@@ -4,686 +4,224 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SKZ Goods | Stray Kids Fan Collection</title>
+    <link rel="stylesheet" href="style.css">
+    
     <style>
-        /* Modern Warm & Smooth Design System */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #f7f6f4; /* Soft warm off-white background */
-            color: #2d2d2d; /* Smooth off-black text */
-            line-height: 1.6;
-        }
-
-        /* Navigation Bar with Floating Cart Button */
-        nav {
-            background-color: #ffffff;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-            border-bottom: 1px solid #eae6e1;
-        }
-
-        nav .logo {
-            color: #2d2d2d;
-            font-family: Georgia, serif;
-            font-size: 1.4rem;
-            font-weight: bold;
-            letter-spacing: 0.5px;
-        }
-
-        .cart-toggle-btn {
-            background: none;
-            color: #2d2d2d;
-            border: 1px solid #2d2d2d;
-            padding: 8px 18px;
-            border-radius: 4px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-        }
-
-        .cart-toggle-btn:hover {
-            background: #2d2d2d;
-            color: #ffffff;
-        }
-
-        #cart-count {
-            background: #c95245; /* Soft terracotta red indicator */
-            color: white;
-            border-radius: 50%;
-            padding: 1px 6px;
-            font-size: 0.75rem;
-        }
-
-        /* Elegant Hero Banner */
-        header {
-            background: linear-gradient(180deg, #f0ede9 0%, #f7f6f4 100%);
-            color: #2d2d2d;
-            padding: 50px 20px;
-            text-align: center;
-            border-bottom: 1px solid #eae6e1;
-        }
-
-        header h1 {
-            font-size: 2.2rem;
-            margin-bottom: 12px;
-            font-family: Georgia, serif;
-            letter-spacing: 1px;
-            color: #2d2d2d;
-        }
-
-        header p {
-            color: #66615c;
-            font-size: 1.05rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Main Container Layout */
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 35px;
-            color: #c95245; /* Warm soft red title accent */
-            font-family: Georgia, serif;
-            font-size: 1.8rem;
-            font-weight: normal;
-        }
-
-        /* 2-Product Grid Layout */
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 35px;
-            margin-bottom: 60px;
-        }
-
-        .product-card {
-            background: #ffffff;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(160, 150, 140, 0.08);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-            border: 1px solid #eae6e1;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .product-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 6px 25px rgba(160, 150, 140, 0.15);
-        }
-
-        .product-image-container {
-            width: 100%;
-            height: 360px; /* Taller box suited perfectly for photocard dimensions */
-            border-radius: 6px;
-            overflow: hidden;
-            margin-bottom: 18px;
-            background-color: #f7f6f4;
-            border: 1px solid #f0ede9;
-        }
-
-        .product-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .product-title {
-            font-size: 1.25rem;
-            color: #2d2d2d;
-            margin-bottom: 6px;
-            font-family: 'Segoe UI', sans-serif;
-            font-weight: 600;
-        }
-
-        .product-price {
-            font-size: 1.15rem;
-            font-weight: bold;
-            color: #c95245; /* Elegant terracotta branding red */
-            margin-bottom: 12px;
-        }
-
-        .product-description {
-            font-size: 0.9rem;
-            color: #5c5752;
-            margin-bottom: 20px;
-            border-top: 1px solid #f5f2ee;
-            padding-top: 12px;
-            flex-grow: 1;
-        }
-
-        /* Info Section at the bottom */
-        .info-card {
-            background: #ffffff;
-            border: 1px solid #eae6e1;
-            border-radius: 8px;
-            padding: 30px;
-            margin-top: 50px;
-            box-shadow: 0 4px 20px rgba(160, 150, 140, 0.04);
-        }
-
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin-top: 15px;
-        }
-
-        .info-block h4 {
-            color: #c95245;
-            font-size: 1.05rem;
-            margin-bottom: 8px;
-            font-family: Georgia, serif;
-        }
-
-        .info-block p, .info-block a {
-            font-size: 0.9rem;
-            color: #5c5752;
-            text-decoration: none;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 12px;
-            margin-top: 10px;
-        }
-
-        .social-btn {
-            display: inline-block;
-            padding: 6px 14px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-
-        .youtube-btn {
-            background-color: #e63946;
-            color: #ffffff !important;
-        }
-        .youtube-btn:hover { background-color: #cb2d39; }
-
-        .instagram-btn {
-            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-            color: #ffffff !important;
-        }
-        .instagram-btn:hover { opacity: 0.9; }
-
-        /* Interactive Slide-out Shopping Cart Sidebar Drawer */
-        .cart-sidebar {
+        /* Modern Modals Styling for Login & History */
+        .modal-overlay {
             position: fixed;
             top: 0;
-            right: -400px; /* Hidden off-screen right side */
-            width: 400px;
+            left: 0;
+            width: 100%;
             height: 100%;
-            background: #ffffff;
-            box-shadow: -5px 0 25px rgba(0,0,0,0.06);
-            z-index: 200;
-            transition: right 0.3s ease;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
             display: flex;
-            flex-direction: column;
-            padding: 25px;
-            border-left: 1px solid #eae6e1;
-        }
-
-        .cart-sidebar.open {
-            right: 0; /* Slide view toggle activation */
-        }
-
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            border-bottom: 1px solid #f0ede9;
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            z-index: 2000;
         }
-
-        .cart-header h3 {
-            font-family: Georgia, serif;
-            color: #2d2d2d;
+        .modal-box {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 400px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            color: #333;
         }
-
-        .close-cart-btn {
-            background: none;
-            border: none;
-            font-size: 1.3rem;
-            cursor: pointer;
-            color: #8c857e;
+        .modal-box h3 {
+            margin-top: 0;
+            color: #111;
         }
-
-        .cart-items-list {
-            flex-grow: 1;
-            overflow-y: auto;
-            margin-bottom: 20px;
-        }
-
-        .cart-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            border-bottom: 1px solid #f7f6f4;
-            font-size: 0.95rem;
-        }
-
-        .remove-item-btn {
-            background: none;
-            border: none;
-            color: #c95245;
-            cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
-
-        .cart-summary {
-            border-top: 1px solid #f0ede9;
-            padding-top: 15px;
-            margin-bottom: 15px;
-        }
-
-        .cart-total-row {
-            display: flex;
-            justify-content: space-between;
-            font-size: 1.15rem;
-            font-weight: bold;
-            color: #2d2d2d;
-            margin-bottom: 15px;
-        }
-
-        /* Order Form Fields */
-        .order-form-container {
-            display: none; /* Hidden until items are populated inside array */
-            border-top: 1px dashed #d1cac2;
-            padding-top: 15px;
-        }
-
-        .form-title {
-            font-family: Georgia, serif;
-            font-size: 1.2rem;
-            text-align: center;
-            margin-bottom: 15px;
-            color: #2d2d2d;
-        }
-
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            font-size: 0.8rem;
-            color: #5c5752;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .form-group input, .form-group textarea {
+        .modal-box input {
             width: 100%;
             padding: 10px;
-            border: 1px solid #d1cac2;
-            border-radius: 4px;
-            font-size: 0.9rem;
-            background-color: #faf9f7;
-            color: #2d2d2d;
+            margin: 8px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
         }
-
-        .form-group input:focus, .form-group textarea:focus {
-            outline: none;
-            border-color: #c95245;
-            background-color: #ffffff;
-        }
-
-        /* Embedded Custom Native Success Confirmation Notification Screen Block */
-        .success-announcement-overlay {
-            display: none;
-            text-align: center;
-            padding: 30px 10px;
-        }
-
-        .success-announcement-overlay h3 {
-            font-family: Georgia, serif;
-            color: #c95245;
-            font-size: 1.6rem;
-            margin-bottom: 10px;
-        }
-
-        .success-announcement-overlay p {
-            color: #5c5752;
-            font-size: 0.95rem;
-            margin-bottom: 25px;
-        }
-
-        /* Button Framework styles */
-        .btn {
-            display: block;
-            background-color: #2d2d2d; /* Solid off-black */
-            color: #ffffff;
-            padding: 12px;
-            border: none;
-            border-radius: 4px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            text-decoration: none;
-            text-align: center;
-            font-weight: 600;
+        .modal-box button {
             width: 100%;
-            transition: background 0.2s ease;
+            padding: 12px;
+            background: #000;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
         }
-
-        .btn:hover {
-            background-color: #454545;
+        .modal-box button:hover {
+            background: #222;
         }
-
-        .checkout-btn {
-            background-color: #c95245; /* Soft red for execution submission */
+        .close-modal-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #888;
         }
-        .checkout-btn:hover {
-            background-color: #b04337;
+        .auth-controls-header {
+            display: flex;
+            gap: 10px;
+            align-items: center;
         }
-
-        /* Footer configuration elements */
-        footer {
-            text-align: center;
-            padding: 35px;
-            margin-top: 60px;
-            color: #8c857e;
-            font-size: 0.8rem;
-            background-color: #f0ede9;
-            border-top: 1px solid #eae6e1;
-            letter-spacing: 0.3px;
+        .auth-controls-header button {
+            background: #f0f0f0;
+            border: 1px solid #ddd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .auth-controls-header button:hover {
+            background: #e0e0e0;
+        }
+        .order-history-item {
+            border-bottom: 1px solid #eee;
+            padding: 12px 0;
+        }
+        .order-history-item:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <div class="logo">SKZ Goods</div>
-        <button class="cart-toggle-btn" onclick="toggleCart()">
-            🛍️ Cart (<span id="cart-count">0</span>)
-        </button>
-    </nav>
-
-    <header>
-        <h1>STRAY KIDS GOODS</h1>
-        <p>Your softest corner for Stray Kids collections. Find genuine premium photocard expansions prints.</p>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px 4%;">
+        <div class="logo"><h2>SKZ Goods</h2></div>
+        
+        <div class="auth-controls-header">
+            <button id="loginNavBtn">Log In / Sign Up</button>
+            <span id="userGreeting" style="display:none; font-weight: 500;"></span>
+            <button id="historyNavBtn" style="display:none;">Order History</button>
+            <button id="logoutNavBtn" style="display:none;">Log Out</button>
+            <button id="cartToggleBtn">🛍️ Cart (<span id="cartCount">0</span>)</button>
+        </div>
     </header>
 
-    <div class="container">
-        <h2 class="section-title">Our Favorites</h2>
-        
-        <div class="product-grid">
-            <div class="product-card">
-                <div class="product-image-container">
+    <main>
+        <section class="hero">
+            <h1># STRAY KIDS GOODS</h1>
+            <p>Your softest corner for Stray Kids collections. Find genuine premium photocard expansions prints.</p>
+        </section>
+
+        <section class="products-section">
+            <h2>Our Favorites</h2>
+            <div class="products-grid">
+                <div class="product-card">
                     <img src="image_e4aab6.jpg" alt="Felix holding a rose">
+                    <h3>The angelic prince -- Felix</h3>
+                    <p class="price">250 NTD</p>
+                    <p class="desc">Exclusive, high-definition matte print featuring Felix with his ethereal styling and iconic rose composition.</p>
+                    <button class="add-to-cart-btn" data-id="felix" data-name="Felix - Angelic Prince" data-price="250">Add to Cart</button>
                 </div>
-                <div>
-                    <h3 class="product-title">The angelic prince -- Felix</h3>
-                    <div class="product-price">250 NTD</div>
-                    <p class="product-description">
-                        Exclusive, high-definition matte print featuring Felix with his ethereal styling and iconic rose composition. Handled with love and packaged securely.
-                    </p>
-                </div>
-                <button class="btn" onclick="addToCart('The angelic prince -- Felix', 250)">Add to Cart</button>
-            </div>
-
-            <div class="product-card">
-                <div class="product-image-container">
+                
+                <div class="product-card">
                     <img src="image_e4a2d6.jpg" alt="Seungmin in purple mist">
+                    <h3>The soft singer -- Seungmin</h3>
+                    <p class="price">250 NTD</p>
+                    <p class="desc">Premium atmospheric collector card showcasing Seungmin surrounded by a dreamy purple landscape.</p>
+                    <button class="add-to-cart-btn" data-id="seungmin" data-name="Seungmin - Soft Singer" data-price="250">Add to Cart</button>
                 </div>
-                <div>
-                    <h3 class="product-title">The soft singer -- Seungmin</h3>
-                    <div class="product-price">250 NTD</div>
-                    <p class="product-description">
-                        Premium atmospheric collector card showcasing Seungmin surrounded by a dreamy purple landscape. Absolute must-have artifact piece for your collection binder.
-                    </p>
-                </div>
-                <button class="btn" onclick="addToCart('The soft singer -- Seungmin', 250)">Add to Cart</button>
             </div>
-        </div>
+        </section>
 
-        <div class="info-card">
-            <h3 style="font-family: Georgia, serif; color: #2d2d2d; border-bottom: 1px solid #f0ede9; padding-bottom: 10px;">About the Shop & Artist</h3>
+        <section class="info-section">
+            <h3>About the Shop & Artist</h3>
             <div class="info-grid">
-                <div class="info-block">
+                <div>
                     <h4>Contact Information</h4>
                     <p><strong>Name:</strong> Crystal</p>
-                    <p><strong>Email:</strong> <a href="mailto:yp11252086@yphs.tp.edu.tw" style="color: #c95245; text-decoration: underline;">yp11252086@yphs.tp.edu.tw</a></p>
+                    <p><strong>Email:</strong> <a href="mailto:yp11252086@yphs.tp.edu.tw">yp11252086@yphs.tp.edu.tw</a></p>
                 </div>
-                
-                <div class="info-block">
+                <div>
                     <h4>About Stray Kids</h4>
-                    <p>Stray Kids (SKZ) is a global South Korean boy band formed by JYP Entertainment. Known for their unique self-producing style, intense choreography, and powerful music.</p>
+                    <p>Stray Kids (SKZ) is a global South Korean boy band formed by JYP Entertainment known for their unique self-producing style.</p>
                 </div>
-
-                <div class="info-block">
+                <div>
                     <h4>Official SKZ Channels</h4>
-                    <p>Follow their official journeys directly on social media networks:</p>
-                    <div class="social-links">
-                        <a href="https://www.youtube.com/@StrayKids" target="_blank" class="social-btn youtube-btn">🎬 YouTube</a>
-                        <a href="https://www.instagram.com/realstraykids/" target="_blank" class="social-btn instagram-btn">📸 Instagram</a>
-                    </div>
+                    <a href="https://www.youtube.com/@StrayKids" target="_blank">🎬 YouTube</a><br>
+                    <a href="https://www.instagram.com/realstraykids/" target="_blank">📸 Instagram</a>
                 </div>
             </div>
-        </div>
+        </section>
+    </main>
 
+    <div id="cartSidebar" style="display:none; position: fixed; right: 0; top: 0; width: 350px; height: 100%; background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1500; padding: 20px; overflow-y: auto; color: #111;">
+        <button id="closeCartBtn" style="float: right; background: none; border: none; font-size: 20px; cursor: pointer;">✕</button>
+        <h3>Your Selected Goods</h3>
+        <div id="cartItemsContainer"><p>Your cart is empty.</p></div>
+        
+        <hr>
+        <p><strong>Subtotal:</strong> <span id="cartSubtotal">0</span> NTD</p>
+        
+        <h4>Place Your Order</h4>
+        <form id="checkoutForm" onsubmit="event.preventDefault();">
+            <input type="text" id="orderName" placeholder="Your Full Name" required style="width:100%; margin-bottom:10px; padding:8px;">
+            <input type="email" id="orderEmail" placeholder="Email Address" required style="width:100%; margin-bottom:10px; padding:8px;" readonly>
+            <textarea id="orderNotes" placeholder="Special Delivery Notes (Optional)" style="width:100%; margin-bottom:10px; padding:8px;"></textarea>
+            <button type="button" id="submitOrderBtn" style="width: 100%; padding: 12px; background: forestgreen; color: white; border: none; font-weight: bold; cursor: pointer;">Summon Your Order</button>
+        </form>
     </div>
 
-    <div class="cart-sidebar" id="cart-sidebar">
-        <div class="cart-header">
-            <h3>Your Selected Goods</h3>
-            <button class="close-cart-btn" onclick="toggleCart()">✕</button>
-        </div>
-
-        <div id="cart-main-wrapper">
-            <div class="cart-items-list" id="cart-items-container">
-                <p style="color: #8c857e; text-align: center; margin-top: 20px;">Your cart is empty.</p>
+    <div id="authModal" class="modal-overlay" style="display:none;">
+        <div class="modal-box">
+            <button class="close-modal-btn" id="closeAuthBtn">&times;</button>
+            
+            <div id="loginFormSection">
+                <h3>Log In</h3>
+                <label>Email Address</label>
+                <input type="email" id="loginEmail" required>
+                <label>Password</label>
+                <input type="password" id="loginPassword" required>
+                <button id="executeLoginBtn">Log In</button>
+                <p style="text-align: center; margin-top: 15px; font-size: 14px;">Don't have an account? <a href="#" id="toSignupLink">Sign up here</a></p>
             </div>
 
-            <div class="cart-summary">
-                <div class="cart-total-row">
-                    <span>Subtotal:</span>
-                    <span id="cart-total-display">0 NTD</span>
-                </div>
-            </div>
-
-            <div class="order-form-container" id="order-form-container">
-                <h4 class="form-title">Place Your Order</h4>
-                
-                <form id="checkout-form-endpoint" action="https://formspree.io/f/xbdbbrqd" method="POST">
-                    
-                    <input type="hidden" id="form-cart-details" name="ordered_items" value="">
-                    <input type="hidden" id="form-total-price" name="total_amount" value="">
-
-                    <div class="form-group">
-                        <label for="name">Your Full Name</label>
-                        <input type="text" id="name" name="customer_name" placeholder="John Doe" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="customer_email" placeholder="stay@example.com" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="message">Special Delivery Notes (Optional)</label>
-                        <textarea id="message" name="customer_notes" rows="3" placeholder="Leave any instructions here..."></textarea>
-                    </div>
-
-                    <button type="submit" id="submit-btn-text" class="btn checkout-btn">Summon Your Order</button>
-                </form>
+            <div id="signupFormSection" style="display:none;">
+                <h3>Sign Up</h3>
+                <label>Full Name</label>
+                <input type="text" id="signupName" required>
+                <label>Email Address</label>
+                <input type="email" id="signupEmail" required>
+                <label>Password</label>
+                <input type="password" id="signupPassword" required>
+                <button id="executeSignupBtn">Create Account</button>
+                <p style="text-align: center; margin-top: 15px; font-size: 14px;">Already have an account? <a href="#" id="toLoginLink">Log in here</a></p>
             </div>
         </div>
+    </div>
 
-        <div class="success-announcement-overlay" id="success-announcement-view">
-            <span>🎉</span>
+    <div id="historyModal" class="modal-overlay" style="display:none;">
+        <div class="modal-box" style="max-width: 500px; max-height: 80vh; overflow-y: auto;">
+            <button class="close-modal-btn" id="closeHistoryBtn">&times;</button>
+            <h3>Your Order History</h3>
+            <div id="orderHistoryContainer">
+                <p>Loading your past orders...</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="successOverlay" class="modal-overlay" style="display:none;">
+        <div class="modal-box" style="text-align: center;">
+            <span style="font-size: 50px;">🎉</span>
             <h3>Thank You!</h3>
             <p>Your order has been submitted successfully. Crystal will check your order note details shortly!</p>
-            <button class="btn" onclick="resetAndCloseCart()">Return to Shop</button>
+            <button id="closeSuccessBtn">Return to Shop</button>
         </div>
     </div>
 
-    <footer>
-        <p>&copy; 2026 SKZ Goods. Built by Crystal for learning web design.<br>Kpop goods online store. NTD is the displayed currency.</p>
+    <footer style="text-align: center; padding: 40px 0; margin-top: 40px; border-top: 1px solid #eee; font-size: 14px;">
+        © 2026 SKZ Goods. Built by Crystal for learning web design.
     </footer>
 
-    <script>
-        let cart = [];
-
-        function toggleCart() {
-            const sidebar = document.getElementById('cart-sidebar');
-            sidebar.classList.toggle('open');
-        }
-
-        function addToCart(productName, price) {
-            // Force reset success view back to item view if they add more prints later
-            document.getElementById('cart-main-wrapper').style.display = 'block';
-            document.getElementById('success-announcement-view').style.display = 'none';
-
-            const existingItem = cart.find(item => item.name === productName);
-            
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({ name: productName, price: price, quantity: 1 });
-            }
-            
-            updateCartUI();
-            document.getElementById('cart-sidebar').classList.add('open');
-        }
-
-        function removeFromCart(productName) {
-            cart = cart.filter(item => item.name !== productName);
-            updateCartUI();
-        }
-
-        function updateCartUI() {
-            const itemsContainer = document.getElementById('cart-items-container');
-            const cartCountElement = document.getElementById('cart-count');
-            const totalDisplay = document.getElementById('cart-total-display');
-            const formContainer = document.getElementById('order-form-container');
-            
-            const hiddenCartDetails = document.getElementById('form-cart-details');
-            const hiddenTotalAmount = document.getElementById('form-total-price');
-
-            itemsContainer.innerHTML = '';
-            
-            if (cart.length === 0) {
-                itemsContainer.innerHTML = '<p style="color: #8c857e; text-align: center; margin-top: 20px;">Your cart is empty.</p>';
-                cartCountElement.innerText = '0';
-                totalDisplay.innerText = '0 NTD';
-                formContainer.style.display = 'none';
-                return;
-            }
-
-            let totalCount = 0;
-            let totalPrice = 0;
-            let descriptiveManifest = '';
-
-            cart.forEach(item => {
-                totalCount += item.quantity;
-                totalPrice += (item.price * item.quantity);
-                descriptiveManifest += `${item.name} (Qty: ${item.quantity}) | `;
-
-                const itemRow = document.createElement('div');
-                itemRow.className = 'cart-item';
-                itemRow.innerHTML = `
-                    <div>
-                        <strong>${item.name}</strong><br>
-                        <small>${item.price} NTD x ${item.quantity}</small>
-                    </div>
-                    <button class="remove-item-btn" onclick="removeFromCart('${item.name}')">Remove</button>
-                `;
-                itemsContainer.appendChild(itemRow);
-            });
-
-            cartCountElement.innerText = totalCount;
-            totalDisplay.innerText = `${totalPrice} NTD`;
-            formContainer.style.display = 'block';
-
-            hiddenCartDetails.value = descriptiveManifest;
-            hiddenTotalAmount.value = `${totalPrice} NTD`;
-        }
-
-        // Intercept standard form redirections and run fetch post processes
-        const checkoutForm = document.getElementById('checkout-form-endpoint');
-        
-        checkoutForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevents page reload or offsite navigation redirects
-            
-            const submitButton = document.getElementById('submit-btn-text');
-            submitButton.innerText = "Sending Order...";
-            submitButton.disabled = true;
-
-            const formData = new FormData(checkoutForm);
-
-            fetch(checkoutForm.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            })
-            .then(response => {
-                if (response.ok) {
-                    // Hide cart and open custom thank you confirmation card block
-                    document.getElementById('cart-main-wrapper').style.display = 'none';
-                    document.getElementById('success-announcement-view').style.display = 'block';
-                } else {
-                    alert("Oops! There was a problem submitting your form. Please verify your link.");
-                    submitButton.innerText = "Summon Your Order";
-                    submitButton.disabled = false;
-                }
-            })
-            .catch(error => {
-                alert("Submission failed. Please check network connection settings.");
-                submitButton.innerText = "Summon Your Order";
-                submitButton.disabled = false;
-            });
-        });
-
-        function resetAndCloseCart() {
-            // Wipe data state arrays, update UI counters, flip back view layers
-            cart = [];
-            updateCartUI();
-            
-            document.getElementById('checkout-form-endpoint').reset();
-            const submitButton = document.getElementById('submit-btn-text');
-            submitButton.innerText = "Summon Your Order";
-            submitButton.disabled = false;
-
-            document.getElementById('cart-main-wrapper').style.display = 'block';
-            document.getElementById('success-announcement-view').style.display = 'none';
-            
-            toggleCart();
-        }
-    </script>
+    <script type="module" src="app.js"></script>
 </body>
 </html>
        

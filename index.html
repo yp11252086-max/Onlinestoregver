@@ -241,13 +241,9 @@
         }
         .cart-icon:hover { background: #ffb3ba; }
     </style>
-    
-    <!-- 預先加載 JavaScript，確保點擊立即響應 -->
-    <script src="app.js" defer></script>
 </head>
 <body>
 
-    <!-- 頂部登入狀態列 -->
     <div class="auth-header-bar" id="authBarContainer">
         <span id="loggedOutState">
             <span class="auth-link" onclick="openPopup('loginPopup')">Log In</span> | 
@@ -260,7 +256,6 @@
         </span>
     </div>
 
-    <!-- 標題與購物車按鈕 -->
     <header>
         <div class="logo">SKZ Goods</div>
         <div class="cart-icon" onclick="toggleCart()">
@@ -269,17 +264,14 @@
     </header>
 
     <main>
-        <!-- 主視覺橫幅 -->
         <section class="hero">
             <h1># STRAY KIDS GOODS</h1>
             <p>Your softest corner for Stray Kids collections. Find genuine premium photocard expansions prints.</p>
         </section>
 
-        <!-- 商品展示區 -->
         <section class="favorites">
             <h2>Our Favorites</h2>
             <div class="product-grid">
-                <!-- Felix -->
                 <div class="product-card">
                     <img src="image_e4aab6.jpg" alt="Felix holding a rose">
                     <h3>The angelic prince -- Felix</h3>
@@ -288,7 +280,6 @@
                     <button class="add-to-cart" onclick="addToCart('Felix - Angelic Prince', 250)">Add to Cart</button>
                 </div>
 
-                <!-- Seungmin -->
                 <div class="product-card">
                     <img src="image_e4a2d6.jpg" alt="Seungmin in purple mist">
                     <h3>The soft singer -- Seungmin</h3>
@@ -299,7 +290,6 @@
             </div>
         </section>
 
-        <!-- 關於店家資訊 -->
         <section class="about">
             <h3>About the Shop & Artist</h3>
             <div class="about-grid">
@@ -322,24 +312,20 @@
         </section>
     </main>
 
-    <!-- 側邊欄購物車面板 (包含完整補回的 Place Your Order 欄位) -->
     <div id="cart-panel" class="cart-panel" style="display:none; position: fixed; right:0; top:0; width:320px; height:100%; background:#1e1e1e; border-left: 2px solid #333; box-shadow:-5px 0 15px rgba(0,0,0,0.5); padding:20px; z-index:99999; overflow-y:auto; color:#fff; font-family:monospace;">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding-bottom:10px;">
             <h3 style="color:#ff9ca6; margin:0;">Your Selected Goods</h3>
             <button onclick="toggleCart()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#fff;">✕</button>
         </div>
         
-        <!-- 購物車清單 -->
         <div id="cart-items" style="margin-top:20px;">
             <p style="color:#aaa;">Your cart is empty.</p>
         </div>
         
-        <!-- 金額計算 -->
         <div style="margin-top:20px; border-top:1px solid #333; padding-top:10px;">
             <p><strong>Subtotal:</strong> <span id="cart-total" style="color:#ff9ca6; font-weight:bold;">0</span> NTD</p>
         </div>
 
-        <!-- 結帳資料區塊 (之前消失的 Place Your Order) -->
         <div style="margin-top:20px;">
             <h4 style="color:#ff9ca6; border-top: 1px solid #333; padding-top:15px; margin-bottom:10px;">Place Your Order</h4>
             
@@ -356,7 +342,6 @@
         </div>
     </div>
 
-    <!-- 註冊彈出視窗 -->
     <div id="signupPopup" class="simple-popup-overlay">
         <div class="simple-popup-box">
             <button class="close-popup" onclick="closePopup('signupPopup')">&times;</button>
@@ -372,7 +357,6 @@
         </div>
     </div>
 
-    <!-- 登入彈出視窗 (已補上缺失的 > 括號與結構) -->
     <div id="loginPopup" class="simple-popup-overlay">
         <div class="simple-popup-box">
             <button class="close-popup" onclick="closePopup('loginPopup')">&times;</button>
@@ -386,7 +370,6 @@
         </div>
     </div>
 
-    <!-- 歷史訂單彈出視窗 -->
     <div id="historyPopup" class="simple-popup-overlay">
         <div class="simple-popup-box" style="max-width: 500px; max-height: 70vh; overflow-y: auto;">
             <button class="close-popup" onclick="closePopup('historyPopup')">&times;</button>
@@ -395,7 +378,6 @@
         </div>
     </div>
 
-    <!-- 感謝購買彈出視窗 -->
     <div id="thankyouPopup" class="simple-popup-overlay">
         <div class="simple-popup-box" style="text-align: center;">
             <span style="font-size: 40px;">🎉</span>
@@ -405,11 +387,227 @@
         </div>
     </div>
 
-    <!-- 頁尾 -->
     <footer>
         <p>&copy; 2026 SKZ Goods. Built by Crystal for learning web design.</p>
     </footer>
 
+    <script>
+        let cart = [];
+        let loggedInUser = null;
+
+        // 當頁面完全載入時，自動檢查是否有登入紀錄
+        window.onload = function() {
+            const savedUser = localStorage.getItem('currentSKZUser');
+            if (savedUser) {
+                loggedInUser = JSON.parse(savedUser);
+                updateAuthBar();
+            }
+        };
+
+        function openPopup(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+
+        function closePopup(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function toggleCart() {
+            const panel = document.getElementById('cart-panel');
+            panel.style.display = (panel.style.display === 'none' || panel.style.display === '') ? 'block' : 'none';
+        }
+
+        function addToCart(name, price) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({ name, price, quantity: 1 });
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const countEl = document.getElementById('cart-count');
+            const itemsContainer = document.getElementById('cart-items');
+            const totalEl = document.getElementById('cart-total');
+            
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            countEl.innerText = totalItems;
+
+            if (cart.length === 0) {
+                itemsContainer.innerHTML = "<p style='color:#aaa;'>Your cart is empty.</p>";
+                totalEl.innerText = "0";
+                return;
+            }
+
+            itemsContainer.innerHTML = "";
+            let grandTotal = 0;
+
+            cart.forEach((item, index) => {
+                grandTotal += (item.price * item.quantity);
+                // 修正：暗色容器白字顯示，絕不隱形
+                itemsContainer.innerHTML += `
+                    <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px; background:#121212; border:1px solid #333; padding:10px; border-radius:4px; color:#ffffff;">
+                        <div>
+                            <strong style="color:#ff9ca6;">${item.name}</strong><br>
+                            <span style="color:#ccc;">${item.price} NTD x ${item.quantity}</span>
+                        </div>
+                        <button onclick="removeFromCart(${index})" style="background:none; border:none; color:#ff4d4d; cursor:pointer; font-weight:bold;">Remove</button>
+                    </div>
+                `;
+            });
+            totalEl.innerText = grandTotal;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function registerUser() {
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            if (!name || !email || !password) {
+                alert("Please fill in all sign-up boxes!");
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem('skzStoreUsers')) || [];
+            
+            if (users.find(u => u.email === email)) {
+                alert("This email is already registered! Please Log In instead.");
+                return;
+            }
+
+            const newUser = { name, email, password };
+            users.push(newUser);
+            localStorage.setItem('skzStoreUsers', JSON.stringify(users));
+
+            loggedInUser = newUser;
+            localStorage.setItem('currentSKZUser', JSON.stringify(newUser));
+            
+            alert("Account created successfully!");
+            closePopup('signupPopup');
+            updateAuthBar();
+        }
+
+        function loginUser() {
+            const email = document.getElementById('logEmail').value.trim();
+            const password = document.getElementById('logPassword').value;
+
+            let users = JSON.parse(localStorage.getItem('skzStoreUsers')) || [];
+            const userMatch = users.find(u => u.email === email && u.password === password);
+
+            if (userMatch) {
+                loggedInUser = userMatch;
+                localStorage.setItem('currentSKZUser', JSON.stringify(userMatch));
+                closePopup('loginPopup');
+                updateAuthBar();
+            } else {
+                alert("Invalid email or password. Please try again or Sign Up!");
+            }
+        }
+
+        function logoutUser() {
+            loggedInUser = null;
+            localStorage.removeItem('currentSKZUser');
+            alert("Logged out successfully.");
+            location.reload();
+        }
+
+        function updateAuthBar() {
+            const loggedOutState = document.getElementById('loggedOutState');
+            const loggedInState = document.getElementById('loggedInState');
+            const displayUsername = document.getElementById('displayUsername');
+            const inputEmail = document.getElementById('customer-email');
+            const inputName = document.getElementById('customer-name');
+
+            if (loggedInUser) {
+                loggedOutState.style.display = 'none';
+                loggedInState.style.display = 'inline';
+                displayUsername.innerText = loggedInUser.name;
+                
+                if(inputEmail) inputEmail.value = loggedInUser.email;
+                if(inputName) inputName.value = loggedInUser.name;
+            } else {
+                loggedOutState.style.display = 'inline';
+                loggedInState.style.display = 'none';
+            }
+        }
+
+        function processCheckout() {
+            if (!loggedInUser) {
+                alert("🔒 You must be signed up and logged in to purchase from our store!");
+                toggleCart();
+                openPopup('loginPopup');
+                return;
+            }
+
+            if (cart.length === 0) {
+                alert("Your cart is empty. Please add items before purchasing.");
+                return;
+            }
+
+            const name = document.getElementById('customer-name').value.trim();
+            const notes = document.getElementById('customer-notes').value.trim();
+
+            if (!name) {
+                alert("Please enter your name for delivery.");
+                return;
+            }
+
+            const newOrder = {
+                userEmail: loggedInUser.email,
+                customerName: name,
+                items: [...cart],
+                total: document.getElementById('cart-total').innerText,
+                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+                deliveryNotes: notes
+            };
+
+            let allOrders = JSON.parse(localStorage.getItem('skzStoreOrders')) || [];
+            allOrders.push(newOrder);
+            localStorage.setItem('skzStoreOrders', JSON.stringify(allOrders));
+
+            cart = [];
+            updateCartUI();
+            toggleCart();
+            document.getElementById('customer-notes').value = "";
+            
+            openPopup('thankyouPopup');
+        }
+
+        function showHistory() {
+            const listContainer = document.getElementById('historyList');
+            let allOrders = JSON.parse(localStorage.getItem('skzStoreOrders')) || [];
+            const myOrders = allOrders.filter(o => o.userEmail === loggedInUser.email);
+
+            if (myOrders.length === 0) {
+                listContainer.innerHTML = "<p style='color:#777;text-align:center;'>You haven't placed any orders yet!</p>";
+                return;
+            }
+
+            listContainer.innerHTML = "";
+            myOrders.reverse().forEach(order => {
+                let itemLines = "";
+                order.items.forEach(i => {
+                    itemLines += `<li>${i.name} (x${i.quantity})</li>`;
+                });
+
+                listContainer.innerHTML += `
+                    <div class="order-history-card">
+                        <p style="margin:0; font-size:12px; color:#666;">Ordered on: ${order.date}</p>
+                        <p style="margin:5px 0; font-weight:bold; color:#ff9ca6;">Total Cost: ${order.total} NTD</p>
+                        <ul style="margin:5px 0; padding-left:20px; font-size:13px; color:#fff;">${itemLines}</ul>
+                        ${order.deliveryNotes ? `<p style="margin:5px 0 0 0; font-size:12px; color:#aaa; font-style:italic;">Note: "${order.deliveryNotes}"</p>` : ''}
+                    </div>
+                `;
+            });
+        }
+    </script>
 </body>
 </html>
        

@@ -7,101 +7,63 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
-        /* Modern Modals Styling for Login & History */
-        .modal-overlay {
+        /* Minimal styling to make the new popups look premium and clean */
+        .simple-popup-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.6);
-            backdrop-filter: blur(4px);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
         }
-        .modal-box {
-            background: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            max-width: 400px;
-            width: 90%;
-            position: relative;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-            color: #333;
+        .simple-popup-box {
+            background: white; padding: 30px; border-radius: 8px;
+            max-width: 400px; width: 90%; color: #333; position: relative;
         }
-        .modal-box h3 {
-            margin-top: 0;
-            color: #111;
+        .simple-popup-box h3 { margin-top: 0; color: #000; }
+        .simple-popup-box input {
+            width: 100%; padding: 10px; margin: 8px 0 15px 0;
+            border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;
         }
-        .modal-box input {
-            width: 100%;
-            padding: 10px;
-            margin: 8px 0 15px 0;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            box-sizing: border-box;
+        .simple-popup-box button {
+            width: 100%; padding: 10px; background: #000; color: #fff;
+            border: none; border-radius: 4px; cursor: pointer; font-weight: bold;
         }
-        .modal-box button {
-            width: 100%;
-            padding: 12px;
-            background: #000;
-            color: #fff;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
+        .close-popup {
+            position: absolute; top: 10px; right: 15px;
+            background: none; border: none; font-size: 20px; cursor: pointer; color: #888;
         }
-        .modal-box button:hover {
-            background: #222;
+        .auth-bar {
+            display: flex; gap: 10px; align-items: center; font-size: 14px;
         }
-        .close-modal-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #888;
-        }
-        .auth-controls-header {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .auth-controls-header button {
-            background: #f0f0f0;
-            border: 1px solid #ddd;
-            padding: 6px 12px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .auth-controls-header button:hover {
-            background: #e0e0e0;
-        }
-        .order-history-item {
-            border-bottom: 1px solid #eee;
-            padding: 12px 0;
-        }
-        .order-history-item:last-child {
-            border-bottom: none;
+        .auth-link { cursor: pointer; text-decoration: underline; font-weight: bold;}
+        .order-history-card {
+            border: 1px solid #ddd; padding: 10px; margin-top: 10px; border-radius: 4px;
         }
     </style>
 </head>
 <body>
 
-    <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px 4%;">
-        <div class="logo"><h2>SKZ Goods</h2></div>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 20px 5%;">
+        <div class="logo">
+            <h1 style="margin:0; font-size: 24px;">SKZ Goods</h1>
+        </div>
         
-        <div class="auth-controls-header">
-            <button id="loginNavBtn">Log In / Sign Up</button>
-            <span id="userGreeting" style="display:none; font-weight: 500;"></span>
-            <button id="historyNavBtn" style="display:none;">Order History</button>
-            <button id="logoutNavBtn" style="display:none;">Log Out</button>
-            <button id="cartToggleBtn">🛍️ Cart (<span id="cartCount">0</span>)</button>
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <div class="auth-bar" id="authBarContainer">
+                <span id="loggedOutState">
+                    <span class="auth-link" onclick="openPopup('loginPopup')">Log In</span> / 
+                    <span class="auth-link" onclick="openPopup('signupPopup')">Sign Up</span>
+                </span>
+                <span id="loggedInState" style="display: none;">
+                    Hi, <strong id="displayUsername">User</strong>! 
+                    [<span class="auth-link" onclick="openPopup('historyPopup'); showHistory();">Order History</span>] | 
+                    <span class="auth-link" style="color: red;" onclick="logoutUser()">Log Out</span>
+                </span>
+            </div>
+
+            <div class="cart-icon" onclick="toggleCart()">
+                🛍️ Cart (<span id="cart-count">0</span>)
+            </div>
         </div>
     </header>
 
@@ -111,117 +73,122 @@
             <p>Your softest corner for Stray Kids collections. Find genuine premium photocard expansions prints.</p>
         </section>
 
-        <section class="products-section">
+        <section class="favorites">
             <h2>Our Favorites</h2>
-            <div class="products-grid">
+            <div class="product-grid">
                 <div class="product-card">
                     <img src="image_e4aab6.jpg" alt="Felix holding a rose">
                     <h3>The angelic prince -- Felix</h3>
                     <p class="price">250 NTD</p>
-                    <p class="desc">Exclusive, high-definition matte print featuring Felix with his ethereal styling and iconic rose composition.</p>
-                    <button class="add-to-cart-btn" data-id="felix" data-name="Felix - Angelic Prince" data-price="250">Add to Cart</button>
+                    <p class="description">Exclusive, high-definition matte print featuring Felix with his ethereal styling and iconic rose composition. Handled with love and packaged securely.</p>
+                    <button class="add-to-cart" onclick="addToCart('Felix - Angelic Prince', 250)">Add to Cart</button>
                 </div>
-                
+
                 <div class="product-card">
                     <img src="image_e4a2d6.jpg" alt="Seungmin in purple mist">
                     <h3>The soft singer -- Seungmin</h3>
                     <p class="price">250 NTD</p>
-                    <p class="desc">Premium atmospheric collector card showcasing Seungmin surrounded by a dreamy purple landscape.</p>
-                    <button class="add-to-cart-btn" data-id="seungmin" data-name="Seungmin - Soft Singer" data-price="250">Add to Cart</button>
+                    <p class="description">Premium atmospheric collector card showcasing Seungmin surrounded by a dreamy purple landscape. Absolute must-have artifact piece for your collection binder.</p>
+                    <button class="add-to-cart" onclick="addToCart('Seungmin - Soft Singer', 250)">Add to Cart</button>
                 </div>
             </div>
         </section>
 
-        <section class="info-section">
+        <section class="about">
             <h3>About the Shop & Artist</h3>
-            <div class="info-grid">
-                <div>
+            <div class="about-grid">
+                <div class="contact-info">
                     <h4>Contact Information</h4>
                     <p><strong>Name:</strong> Crystal</p>
                     <p><strong>Email:</strong> <a href="mailto:yp11252086@yphs.tp.edu.tw">yp11252086@yphs.tp.edu.tw</a></p>
                 </div>
-                <div>
+                <div class="skz-info">
                     <h4>About Stray Kids</h4>
-                    <p>Stray Kids (SKZ) is a global South Korean boy band formed by JYP Entertainment known for their unique self-producing style.</p>
+                    <p>Stray Kids (SKZ) is a global South Korean boy band formed by JYP Entertainment. Known for their unique self-producing style, intense choreography, and powerful music.</p>
                 </div>
-                <div>
+                <div class="social-links">
                     <h4>Official SKZ Channels</h4>
-                    <a href="https://www.youtube.com/@StrayKids" target="_blank">🎬 YouTube</a><br>
+                    <p>Follow their official journeys directly on social media networks:</p>
+                    <a href="https://www.youtube.com/@StrayKids" target="_blank">🎬 YouTube</a>
                     <a href="https://www.instagram.com/realstraykids/" target="_blank">📸 Instagram</a>
                 </div>
             </div>
         </section>
     </main>
 
-    <div id="cartSidebar" style="display:none; position: fixed; right: 0; top: 0; width: 350px; height: 100%; background: white; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1500; padding: 20px; overflow-y: auto; color: #111;">
-        <button id="closeCartBtn" style="float: right; background: none; border: none; font-size: 20px; cursor: pointer;">✕</button>
-        <h3>Your Selected Goods</h3>
-        <div id="cartItemsContainer"><p>Your cart is empty.</p></div>
-        
-        <hr>
-        <p><strong>Subtotal:</strong> <span id="cartSubtotal">0</span> NTD</p>
-        
-        <h4>Place Your Order</h4>
-        <form id="checkoutForm" onsubmit="event.preventDefault();">
-            <input type="text" id="orderName" placeholder="Your Full Name" required style="width:100%; margin-bottom:10px; padding:8px;">
-            <input type="email" id="orderEmail" placeholder="Email Address" required style="width:100%; margin-bottom:10px; padding:8px;" readonly>
-            <textarea id="orderNotes" placeholder="Special Delivery Notes (Optional)" style="width:100%; margin-bottom:10px; padding:8px;"></textarea>
-            <button type="button" id="submitOrderBtn" style="width: 100%; padding: 12px; background: forestgreen; color: white; border: none; font-weight: bold; cursor: pointer;">Summon Your Order</button>
-        </form>
-    </div>
+    <div id="cart-panel" class="cart-panel" style="display:none; position: fixed; right:0; top:0; width:320px; height:100%; background:white; box-shadow:-2px 0 10px rgba(0,0,0,0.2); padding:20px; z-index:999; overflow-y:auto; color:#000;">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3>Your Selected Goods</h3>
+            <button onclick="toggleCart()" style="background:none; border:none; font-size:20px; cursor:pointer;">✕</button>
+        </div>
+        <div id="cart-items">
+            <p>Your cart is empty.</p>
+        </div>
+        <div style="margin-top:20px; border-top:1px solid #eee; padding-top:10px;">
+            <p><strong>Subtotal:</strong> <span id="cart-total">0</span> NTD</p>
+        </div>
 
-    <div id="authModal" class="modal-overlay" style="display:none;">
-        <div class="modal-box">
-            <button class="close-modal-btn" id="closeAuthBtn">&times;</button>
-            
-            <div id="loginFormSection">
-                <h3>Log In</h3>
-                <label>Email Address</label>
-                <input type="email" id="loginEmail" required>
-                <label>Password</label>
-                <input type="password" id="loginPassword" required>
-                <button id="executeLoginBtn">Log In</button>
-                <p style="text-align: center; margin-top: 15px; font-size: 14px;">Don't have an account? <a href="#" id="toSignupLink">Sign up here</a></p>
-            </div>
-
-            <div id="signupFormSection" style="display:none;">
-                <h3>Sign Up</h3>
-                <label>Full Name</label>
-                <input type="text" id="signupName" required>
-                <label>Email Address</label>
-                <input type="email" id="signupEmail" required>
-                <label>Password</label>
-                <input type="password" id="signupPassword" required>
-                <button id="executeSignupBtn">Create Account</button>
-                <p style="text-align: center; margin-top: 15px; font-size: 14px;">Already have an account? <a href="#" id="toLoginLink">Log in here</a></p>
-            </div>
+        <div style="margin-top:20px;">
+            <h4>Place Your Order</h4>
+            <input type="text" id="customer-name" placeholder="Your Full Name" style="width:100%; padding:8px; margin-bottom:10px;">
+            <input type="email" id="customer-email" placeholder="Email Address" style="width:100%; padding:8px; margin-bottom:10px;" readonly>
+            <textarea id="customer-notes" placeholder="Special Delivery Notes (Optional)" style="width:100%; padding:8px; margin-bottom:10px;"></textarea>
+            <button onclick="processCheckout()" style="width:100%; padding:10px; background:forestgreen; color:white; border:none; font-weight:bold; cursor:pointer;">Summon Your Order</button>
         </div>
     </div>
 
-    <div id="historyModal" class="modal-overlay" style="display:none;">
-        <div class="modal-box" style="max-width: 500px; max-height: 80vh; overflow-y: auto;">
-            <button class="close-modal-btn" id="closeHistoryBtn">&times;</button>
+
+    <div id="signupPopup" class="simple-popup-overlay" style="display: none;">
+        <div class="simple-popup-box">
+            <button class="close-popup" onclick="closePopup('signupPopup')">&times;</button>
+            <h3>Create Account</h3>
+            <label>Full Name</label>
+            <input type="text" id="regName" placeholder="e.g. Bang Chan">
+            <label>Email Address</label>
+            <input type="email" id="regEmail" placeholder="your@email.com">
+            <label>Password</label>
+            <input type="password" id="regPassword" placeholder="Create a password">
+            <button onclick="registerUser()">Sign Up</button>
+            <p style="font-size:12px; text-align:center;">Already have an account? <span class="auth-link" onclick="closePopup('signupPopup'); openPopup('loginPopup')">Log in</span></p>
+        </div>
+    </div>
+
+    <div id="loginPopup" class="simple-popup-overlay" style="display: none;">
+        <div class="simple-popup-box">
+            <button class="close-popup" onclick="closePopup('loginPopup')">&times;</button>
+            <h3>Log In</h3>
+            <label>Email Address</label>
+            <input type="email" id="logEmail" placeholder="your@email.com">
+            <label>Password</label>
+            <input type="password" id="logPassword" placeholder="Enter password">
+            <button onclick="loginUser()">Log In</button>
+            <p style="font-size:12px; text-align:center;">Need an account? <span class="auth-link" onclick="closePopup('loginPopup'); openPopup('signupPopup')">Sign up</span></p>
+        </div>
+    </div>
+
+    <div id="historyPopup" class="simple-popup-overlay" style="display: none;">
+        <div class="simple-popup-box" style="max-width: 500px; max-height: 70vh; overflow-y: auto;">
+            <button class="close-popup" onclick="closePopup('historyPopup')">&times;</button>
             <h3>Your Order History</h3>
-            <div id="orderHistoryContainer">
-                <p>Loading your past orders...</p>
-            </div>
+            <div id="historyList">
+                </div>
         </div>
     </div>
 
-    <div id="successOverlay" class="modal-overlay" style="display:none;">
-        <div class="modal-box" style="text-align: center;">
-            <span style="font-size: 50px;">🎉</span>
+    <div id="thankyouPopup" class="simple-popup-overlay" style="display: none;">
+        <div class="simple-popup-box" style="text-align: center;">
+            <span style="font-size: 40px;">🎉</span>
             <h3>Thank You!</h3>
             <p>Your order has been submitted successfully. Crystal will check your order note details shortly!</p>
-            <button id="closeSuccessBtn">Return to Shop</button>
+            <button onclick="closePopup('thankyouPopup')">Return to Shop</button>
         </div>
     </div>
 
-    <footer style="text-align: center; padding: 40px 0; margin-top: 40px; border-top: 1px solid #eee; font-size: 14px;">
-        © 2026 SKZ Goods. Built by Crystal for learning web design.
+    <footer>
+        <p>&copy; 2026 SKZ Goods. Built by Crystal for learning web design.</p>
     </footer>
 
-    <script type="module" src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
        

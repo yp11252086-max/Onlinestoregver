@@ -109,7 +109,7 @@
 
         .add-to-cart {
             width: 100%;
-            background-color: #ff9ca6; /* Beautiful soft pink/red */
+            background-color: #ff9ca6;
             color: #000;
             border: none;
             padding: 12px;
@@ -178,19 +178,16 @@
         }
 
         /* ==========================================
-           MODALS & SLIDEOUT WINDOWS ADJUSTMENTS
+           MODALS & SLIDEOUT WINDOWS ADJUSTMENTS (FIXED FREEZE EFFECT)
            ========================================== */
         .simple-popup-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
-            display: none; justify-content: center; align-items: center;
+            display: none; /* 預設完全隱藏，避免覆蓋畫面 */
+            justify-content: center; 
+            align-items: center;
             z-index: 9999;
-        }
-        
-        /* 確保動態顯示時不會出錯的 CSS 規則 */
-        .simple-popup-overlay[style*="display: flex"] {
-            display: flex !important;
         }
         
         .simple-popup-box {
@@ -219,7 +216,6 @@
             background: none; border: none; font-size: 24px; cursor: pointer; color: #fff;
         }
         
-        /* Log In / Sign Up 頂部列放大設計 */
         .auth-header-bar {
             background: #121212; 
             text-align: right; 
@@ -240,6 +236,16 @@
             font-size: 16px;
         }
         .cart-icon:hover { background: #ffb3ba; }
+        
+        /* 側邊購物車面板樣式 */
+        .cart-panel {
+            display: none; /* 預設完全隱藏 */
+            position: fixed; right: 0; top: 0; width: 340px; height: 100%; 
+            background: #1e1e1e; border-left: 2px solid #333; 
+            box-shadow: -5px 0 15px rgba(0,0,0,0.5); padding: 20px; 
+            z-index: 99999; overflow-y: auto; color: #fff; 
+            font-family: monospace; box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -312,7 +318,7 @@
         </section>
     </main>
 
-    <div id="cart-panel" class="cart-panel" style="display:none; position: fixed; right:0; top:0; width:320px; height:100%; background:#1e1e1e; border-left: 2px solid #333; box-shadow:-5px 0 15px rgba(0,0,0,0.5); padding:20px; z-index:99999; overflow-y:auto; color:#fff; font-family:monospace;">
+    <div id="cart-panel" class="cart-panel">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding-bottom:10px;">
             <h3 style="color:#ff9ca6; margin:0;">Your Selected Goods</h3>
             <button onclick="toggleCart()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#fff;">✕</button>
@@ -326,20 +332,23 @@
             <p><strong>Subtotal:</strong> <span id="cart-total" style="color:#ff9ca6; font-weight:bold;">0</span> NTD</p>
         </div>
 
-        <div style="margin-top:20px;">
+        <form action="https://formspree.io/f/xbdbbrqd" method="POST" onsubmit="return handleFormSubmit(event);" style="margin-top:20px;">
             <h4 style="color:#ff9ca6; border-top: 1px solid #333; padding-top:15px; margin-bottom:10px;">Place Your Order</h4>
             
+            <input type="hidden" name="Ordered_Items" id="hidden-cart-details">
+            <input type="hidden" name="Grand_Total" id="hidden-cart-total">
+
             <label style="font-size:12px; color:#aaa; display:block; margin-bottom:4px;">Your Full Name</label>
-            <input type="text" id="customer-name" placeholder="Your Full Name" style="width:100%; padding:8px; margin-bottom:12px; background:#121212; color:#fff; border:1px solid #444; font-family:monospace; box-sizing:border-box; border-radius:4px;">
+            <input type="text" name="Customer_Name" id="customer-name" placeholder="Your Full Name" required style="width:100%; padding:8px; margin-bottom:12px; background:#121212; color:#fff; border:1px solid #444; font-family:monospace; box-sizing:border-box; border-radius:4px;">
             
-            <label style="font-size:12px; color:#aaa; display:block; margin-bottom:4px;">Email Address (Auto filled)</label>
-            <input type="email" id="customer-email" placeholder="Email Address (Auto)" style="width:100%; padding:8px; margin-bottom:12px; background:#121212; color:#888; border:1px solid #444; font-family:monospace; box-sizing:border-box; border-radius:4px;" readonly>
+            <label style="font-size:12px; color:#aaa; display:block; margin-bottom:4px;">Email Address</label>
+            <input type="email" name="Customer_Email" id="customer-email" placeholder="your@email.com" required style="width:100%; padding:8px; margin-bottom:12px; background:#121212; color:#fff; border:1px solid #444; font-family:monospace; box-sizing:border-box; border-radius:4px;">
             
             <label style="font-size:12px; color:#aaa; display:block; margin-bottom:4px;">Special Delivery Notes (Optional)</label>
-            <textarea id="customer-notes" placeholder="Special Delivery Notes (Optional)" style="width:100%; padding:8px; margin-bottom:15px; background:#121212; color:#fff; border:1px solid #444; resize:none; font-family:monospace; height:60px; box-sizing:border-box; border-radius:4px;"></textarea>
+            <textarea name="Delivery_Notes" id="customer-notes" placeholder="Special Delivery Notes (Optional)" style="width:100%; padding:8px; margin-bottom:15px; background:#121212; color:#fff; border:1px solid #444; resize:none; font-family:monospace; height:60px; box-sizing:border-box; border-radius:4px;"></textarea>
             
-            <button onclick="processCheckout()" style="width:100%; padding:12px; background:#ff9ca6; color:black; border:none; font-weight:bold; cursor:pointer; font-size:16px; border-radius:4px;">Summon Your Order</button>
-        </div>
+            <button type="submit" style="width:100%; padding:12px; background:#ff9ca6; color:black; border:none; font-weight:bold; cursor:pointer; font-size:16px; border-radius:4px;">Summon Your Order</button>
+        </form>
     </div>
 
     <div id="signupPopup" class="simple-popup-overlay">
@@ -395,7 +404,7 @@
         let cart = [];
         let loggedInUser = null;
 
-        // 當頁面完全載入時，自動檢查是否有登入紀錄
+        // 初始化檢查登入狀態
         window.onload = function() {
             const savedUser = localStorage.getItem('currentSKZUser');
             if (savedUser) {
@@ -414,7 +423,11 @@
 
         function toggleCart() {
             const panel = document.getElementById('cart-panel');
-            panel.style.display = (panel.style.display === 'none' || panel.style.display === '') ? 'block' : 'none';
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                panel.style.display = 'block';
+            } else {
+                panel.style.display = 'none';
+            }
         }
 
         function addToCart(name, price) {
@@ -425,6 +438,9 @@
                 cart.push({ name, price, quantity: 1 });
             }
             updateCartUI();
+            
+            // 加入商品時自動把購物車震動滑出，提示使用者商品已加入
+            document.getElementById('cart-panel').style.display = 'block';
         }
 
         function updateCartUI() {
@@ -438,15 +454,19 @@
             if (cart.length === 0) {
                 itemsContainer.innerHTML = "<p style='color:#aaa;'>Your cart is empty.</p>";
                 totalEl.innerText = "0";
+                if(document.getElementById('hidden-cart-details')) document.getElementById('hidden-cart-details').value = "";
+                if(document.getElementById('hidden-cart-total')) document.getElementById('hidden-cart-total').value = "0";
                 return;
             }
 
             itemsContainer.innerHTML = "";
             let grandTotal = 0;
+            let emailTextDetails = "";
 
             cart.forEach((item, index) => {
                 grandTotal += (item.price * item.quantity);
-                // 修正：暗色容器白字顯示，絕不隱形
+                emailTextDetails += `${item.name} (x${item.quantity}) - ${item.price * item.quantity} NTD\n`;
+                
                 itemsContainer.innerHTML += `
                     <div style="display:flex; justify-content:space-between; margin-bottom:12px; font-size:14px; background:#121212; border:1px solid #333; padding:10px; border-radius:4px; color:#ffffff;">
                         <div>
@@ -458,6 +478,10 @@
                 `;
             });
             totalEl.innerText = grandTotal;
+            
+            // 打包成純文字存入 Form 的隱藏 input 中，用來隨信寄出
+            if(document.getElementById('hidden-cart-details')) document.getElementById('hidden-cart-details').value = emailTextDetails;
+            if(document.getElementById('hidden-cart-total')) document.getElementById('hidden-cart-total').value = grandTotal + " NTD";
         }
 
         function removeFromCart(index) {
@@ -476,9 +500,8 @@
             }
 
             let users = JSON.parse(localStorage.getItem('skzStoreUsers')) || [];
-            
             if (users.find(u => u.email === email)) {
-                alert("This email is already registered! Please Log In instead.");
+                alert("This email is already registered! Please Log In.");
                 return;
             }
 
@@ -507,7 +530,7 @@
                 closePopup('loginPopup');
                 updateAuthBar();
             } else {
-                alert("Invalid email or password. Please try again or Sign Up!");
+                alert("Invalid email or password!");
             }
         }
 
@@ -526,58 +549,61 @@
             const inputName = document.getElementById('customer-name');
 
             if (loggedInUser) {
-                loggedOutState.style.display = 'none';
-                loggedInState.style.display = 'inline';
-                displayUsername.innerText = loggedInUser.name;
+                if(loggedOutState) loggedOutState.style.display = 'none';
+                if(loggedInState) loggedInState.style.display = 'inline';
+                if(displayUsername) displayUsername.innerText = loggedInUser.name;
                 
                 if(inputEmail) inputEmail.value = loggedInUser.email;
                 if(inputName) inputName.value = loggedInUser.name;
             } else {
-                loggedOutState.style.display = 'inline';
-                loggedInState.style.display = 'none';
+                if(loggedOutState) loggedOutState.style.display = 'inline';
+                if(loggedInState) loggedInState.style.display = 'none';
             }
         }
 
-        function processCheckout() {
+        // 當按下結帳 Form 的發送按鈕時執行的攔截邏輯
+        function handleFormSubmit(event) {
             if (!loggedInUser) {
-                alert("🔒 You must be signed up and logged in to purchase from our store!");
+                alert("🔒 You must be logged in to complete a purchase!");
+                event.preventDefault(); // 阻止表單寄出
                 toggleCart();
                 openPopup('loginPopup');
-                return;
+                return false;
             }
 
             if (cart.length === 0) {
-                alert("Your cart is empty. Please add items before purchasing.");
-                return;
+                alert("Your cart is empty!");
+                event.preventDefault();
+                return false;
             }
 
-            const name = document.getElementById('customer-name').value.trim();
-            const notes = document.getElementById('customer-notes').value.trim();
-
-            if (!name) {
-                alert("Please enter your name for delivery.");
-                return;
-            }
+            // 在正式發射信件到外部前，同時將訂單秘密存一份到本地端的 Order History 裡面
+            const nameField = document.getElementById('customer-name').value.trim();
+            const notesField = document.getElementById('customer-notes').value.trim();
 
             const newOrder = {
                 userEmail: loggedInUser.email,
-                customerName: name,
+                customerName: nameField,
                 items: [...cart],
                 total: document.getElementById('cart-total').innerText,
-                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
-                deliveryNotes: notes
+                date: new Date().toLocaleString(),
+                deliveryNotes: notesField
             };
 
             let allOrders = JSON.parse(localStorage.getItem('skzStoreOrders')) || [];
             allOrders.push(newOrder);
             localStorage.setItem('skzStoreOrders', JSON.stringify(allOrders));
 
-            cart = [];
-            updateCartUI();
-            toggleCart();
-            document.getElementById('customer-notes').value = "";
-            
-            openPopup('thankyouPopup');
+            // 清空本地端購物車
+            setTimeout(() => {
+                cart = [];
+                updateCartUI();
+                toggleCart();
+                document.getElementById('customer-notes').value = "";
+                openPopup('thankyouPopup');
+            }, 300);
+
+            return true; // 允許 HTML 表單進行真正的發送跳轉
         }
 
         function showHistory() {
@@ -600,7 +626,7 @@
                 listContainer.innerHTML += `
                     <div class="order-history-card">
                         <p style="margin:0; font-size:12px; color:#666;">Ordered on: ${order.date}</p>
-                        <p style="margin:5px 0; font-weight:bold; color:#ff9ca6;">Total Cost: ${order.total} NTD</p>
+                        <p style="margin:5px 0; font-weight:bold; color:#ff9ca6;">Total: ${order.total} NTD</p>
                         <ul style="margin:5px 0; padding-left:20px; font-size:13px; color:#fff;">${itemLines}</ul>
                         ${order.deliveryNotes ? `<p style="margin:5px 0 0 0; font-size:12px; color:#aaa; font-style:italic;">Note: "${order.deliveryNotes}"</p>` : ''}
                     </div>
@@ -610,4 +636,3 @@
     </script>
 </body>
 </html>
-       

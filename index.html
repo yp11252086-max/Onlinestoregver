@@ -95,7 +95,7 @@
 
         .price {
             font-size: 18px;
-            color: #ff9ca6; /* Turned Soft Red/Pink */
+            color: #ff9ca6; /* Beautiful soft pink/red */
             font-weight: bold;
             margin-bottom: 10px;
         }
@@ -109,7 +109,7 @@
 
         .add-to-cart {
             width: 100%;
-            background-color: #ff9ca6; /* Turned Soft Red/Pink */
+            background-color: #ff9ca6; /* Beautiful soft pink/red */
             color: #000;
             border: none;
             padding: 12px;
@@ -155,12 +155,12 @@
         }
 
         .about-grid h4 {
-            color: #ff9ca6; /* Turned Soft Red/Pink */
+            color: #ff9ca6;
             margin-top: 0;
         }
 
         .about-grid a {
-            color: #ff9ca6; /* Turned Soft Red/Pink */
+            color: #ff9ca6;
             text-decoration: none;
         }
 
@@ -178,15 +178,21 @@
         }
 
         /* ==========================================
-           MODALS & INTERACTION STYLING (ADJUSTED)
+           MODALS & SLIDEOUT WINDOWS ADJUSTMENTS
            ========================================== */
         .simple-popup-overlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.85);
-            display: flex; justify-content: center; align-items: center;
+            display: none; justify-content: center; align-items: center;
             z-index: 9999;
         }
+        
+        /* 確保動態顯示時不會出錯的 CSS 規則 */
+        .simple-popup-overlay[style*="display: flex"] {
+            display: flex !important;
+        }
+        
         .simple-popup-box {
             background: #1e1e1e; padding: 30px; border-radius: 8px;
             max-width: 400px; width: 90%; color: #fff; position: relative;
@@ -213,12 +219,12 @@
             background: none; border: none; font-size: 24px; cursor: pointer; color: #fff;
         }
         
-        /* BUMPED UP NAV BAR LINK SIZES (FIXED SIZE ISSUE) */
+        /* Log In / Sign Up 頂部列放大設計 */
         .auth-header-bar {
             background: #121212; 
             text-align: right; 
             padding: 15px 5%; 
-            font-size: 18px; /* Increased font size significantly */
+            font-size: 18px; 
             border-bottom: 1px solid #222;
         }
         .auth-link { cursor: pointer; text-decoration: underline; color: #ff9ca6; margin: 0 10px; font-weight: bold;}
@@ -229,16 +235,19 @@
         }
         
         .cart-icon {
-            background: #ff9ca6; color: #000; padding: 8px 16px; border-radius: 20px;
+            background: #ff9ca6; color: #000; padding: 8px 20px; border-radius: 20px;
             font-weight: bold; display: inline-block; margin-top: 15px; cursor: pointer;
             font-size: 16px;
         }
         .cart-icon:hover { background: #ffb3ba; }
     </style>
+    
+    <!-- 預先加載 JavaScript，確保點擊立即響應 -->
+    <script src="app.js" defer></script>
 </head>
 <body>
 
-    <!-- Authentication Top Bar (Now Bigger) -->
+    <!-- 頂部登入狀態列 -->
     <div class="auth-header-bar" id="authBarContainer">
         <span id="loggedOutState">
             <span class="auth-link" onclick="openPopup('loginPopup')">Log In</span> | 
@@ -251,7 +260,7 @@
         </span>
     </div>
 
-    <!-- Header Section -->
+    <!-- 標題與購物車按鈕 -->
     <header>
         <div class="logo">SKZ Goods</div>
         <div class="cart-icon" onclick="toggleCart()">
@@ -260,17 +269,17 @@
     </header>
 
     <main>
-        <!-- Hero Section -->
+        <!-- 主視覺橫幅 -->
         <section class="hero">
             <h1># STRAY KIDS GOODS</h1>
             <p>Your softest corner for Stray Kids collections. Find genuine premium photocard expansions prints.</p>
         </section>
 
-        <!-- Products Section -->
+        <!-- 商品展示區 -->
         <section class="favorites">
             <h2>Our Favorites</h2>
             <div class="product-grid">
-                <!-- Felix Card -->
+                <!-- Felix -->
                 <div class="product-card">
                     <img src="image_e4aab6.jpg" alt="Felix holding a rose">
                     <h3>The angelic prince -- Felix</h3>
@@ -279,7 +288,7 @@
                     <button class="add-to-cart" onclick="addToCart('Felix - Angelic Prince', 250)">Add to Cart</button>
                 </div>
 
-                <!-- Seungmin Card -->
+                <!-- Seungmin -->
                 <div class="product-card">
                     <img src="image_e4a2d6.jpg" alt="Seungmin in purple mist">
                     <h3>The soft singer -- Seungmin</h3>
@@ -290,7 +299,7 @@
             </div>
         </section>
 
-        <!-- About Section -->
+        <!-- 關於店家資訊 -->
         <section class="about">
             <h3>About the Shop & Artist</h3>
             <div class="about-grid">
@@ -313,34 +322,42 @@
         </section>
     </main>
 
-    <!-- Side-out Shopping Cart Panel (Dark-themed, White Text, High Visibility) -->
+    <!-- 側邊欄購物車面板 (包含完整補回的 Place Your Order 欄位) -->
     <div id="cart-panel" class="cart-panel" style="display:none; position: fixed; right:0; top:0; width:320px; height:100%; background:#1e1e1e; border-left: 2px solid #333; box-shadow:-5px 0 15px rgba(0,0,0,0.5); padding:20px; z-index:99999; overflow-y:auto; color:#fff; font-family:monospace;">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding-bottom:10px;">
             <h3 style="color:#ff9ca6; margin:0;">Your Selected Goods</h3>
             <button onclick="toggleCart()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#fff;">✕</button>
         </div>
         
-        <!-- Cart container inside which names were disappearing -->
+        <!-- 購物車清單 -->
         <div id="cart-items" style="margin-top:20px;">
             <p style="color:#aaa;">Your cart is empty.</p>
         </div>
         
+        <!-- 金額計算 -->
         <div style="margin-top:20px; border-top:1px solid #333; padding-top:10px;">
             <p><strong>Subtotal:</strong> <span id="cart-total" style="color:#ff9ca6; font-weight:bold;">0</span> NTD</p>
         </div>
 
-        <!-- Checkout Form Block -->
+        <!-- 結帳資料區塊 (之前消失的 Place Your Order) -->
         <div style="margin-top:20px;">
             <h4 style="color:#ff9ca6; border-top: 1px solid #333; padding-top:15px; margin-bottom:10px;">Place Your Order</h4>
-            <input type="text" id="customer-name" placeholder="Your Full Name" style="width:100%; padding:8px; margin-bottom:10px; background:#121212; color:#fff; border:1px solid #444; font-family:monospace;">
-            <input type="email" id="customer-email" placeholder="Email Address (Auto)" style="width:100%; padding:8px; margin-bottom:10px; background:#121212; color:#888; border:1px solid #444; font-family:monospace;" readonly>
-            <textarea id="customer-notes" placeholder="Special Delivery Notes (Optional)" style="width:100%; padding:8px; margin-bottom:10px; background:#121212; color:#fff; border:1px solid #444; resize:none; font-family:monospace; height:60px;"></textarea>
-            <button onclick="processCheckout()" style="width:100%; padding:12px; background:#ff9ca6; color:black; border:none; font-weight:bold; cursor:pointer; font-size:16px;">Summon Your Order</button>
+            
+            <label style="font-size:12px; color:#aaa; display:block; margin-bottom:4px;">Your Full Name</label>
+            <input type="text" id="customer-name" placeholder="Your Full Name" style="width:100%; padding:8px; margin-bottom:12px; background:#121212; color:#fff; border:1px solid #444; font-family:monospace; box-sizing:border-box; border-radius:4px;">
+            
+            <label style="font-size:12px; color:#aaa; display:block; margin-bottom:4px;">Email Address (Auto filled)</label>
+            <input type="email" id="customer-email" placeholder="Email Address (Auto)" style="width:100%; padding:8px; margin-bottom:12px; background:#121212; color:#888; border:1px solid #444; font-family:monospace; box-sizing:border-box; border-radius:4px;" readonly>
+            
+            <label style="font-size:12px; color:#aaa; display:block; margin-bottom:4px;">Special Delivery Notes (Optional)</label>
+            <textarea id="customer-notes" placeholder="Special Delivery Notes (Optional)" style="width:100%; padding:8px; margin-bottom:15px; background:#121212; color:#fff; border:1px solid #444; resize:none; font-family:monospace; height:60px; box-sizing:border-box; border-radius:4px;"></textarea>
+            
+            <button onclick="processCheckout()" style="width:100%; padding:12px; background:#ff9ca6; color:black; border:none; font-weight:bold; cursor:pointer; font-size:16px; border-radius:4px;">Summon Your Order</button>
         </div>
     </div>
 
-    <!-- SIGN UP POPUP -->
-    <div id="signupPopup" class="simple-popup-overlay" style="display: none;">
+    <!-- 註冊彈出視窗 -->
+    <div id="signupPopup" class="simple-popup-overlay">
         <div class="simple-popup-box">
             <button class="close-popup" onclick="closePopup('signupPopup')">&times;</button>
             <h3>Create Account</h3>
@@ -355,8 +372,8 @@
         </div>
     </div>
 
-    <!-- LOG IN POPUP -->
-    <div id="loginPopup" class="simple-popup-overlay" style="display: none;">
+    <!-- 登入彈出視窗 (已補上缺失的 > 括號與結構) -->
+    <div id="loginPopup" class="simple-popup-overlay">
         <div class="simple-popup-box">
             <button class="close-popup" onclick="closePopup('loginPopup')">&times;</button>
             <h3>Log In</h3>
@@ -369,8 +386,8 @@
         </div>
     </div>
 
-    <!-- ORDER HISTORY POPUP -->
-    <div id="historyPopup" class="simple-popup-overlay" style="display: none;">
+    <!-- 歷史訂單彈出視窗 -->
+    <div id="historyPopup" class="simple-popup-overlay">
         <div class="simple-popup-box" style="max-width: 500px; max-height: 70vh; overflow-y: auto;">
             <button class="close-popup" onclick="closePopup('historyPopup')">&times;</button>
             <h3>Your Order History</h3>
@@ -378,8 +395,8 @@
         </div>
     </div>
 
-    <!-- THANK YOU POPUP -->
-    <div id="thankyouPopup" class="simple-popup-overlay" style="display: none;">
+    <!-- 感謝購買彈出視窗 -->
+    <div id="thankyouPopup" class="simple-popup-overlay">
         <div class="simple-popup-box" style="text-align: center;">
             <span style="font-size: 40px;">🎉</span>
             <h3>Thank You!</h3>
@@ -388,11 +405,11 @@
         </div>
     </div>
 
+    <!-- 頁尾 -->
     <footer>
         <p>&copy; 2026 SKZ Goods. Built by Crystal for learning web design.</p>
     </footer>
 
-    <script src="app.js"></script>
 </body>
 </html>
        

@@ -7,7 +7,7 @@
     
     <style>
         /* ==========================================
-           YOUR ORIGINAL BEAUTIFUL DARK STYLING
+           YOUR BEAUTIFUL DARK STYLING (SOFT RED/PINK EDITION)
            ========================================== */
         body {
             background-color: #121212;
@@ -28,6 +28,7 @@
             font-size: 28px;
             font-weight: bold;
             letter-spacing: 2px;
+            margin-bottom: 10px;
         }
 
         .hero {
@@ -94,7 +95,7 @@
 
         .price {
             font-size: 18px;
-            color: #ffcc00;
+            color: #ff9ca6; /* Turned Soft Red/Pink */
             font-weight: bold;
             margin-bottom: 10px;
         }
@@ -108,7 +109,7 @@
 
         .add-to-cart {
             width: 100%;
-            background-color: #ffcc00;
+            background-color: #ff9ca6; /* Turned Soft Red/Pink */
             color: #000;
             border: none;
             padding: 12px;
@@ -120,7 +121,7 @@
         }
 
         .add-to-cart:hover {
-            background-color: #e6b800;
+            background-color: #ffb3ba;
         }
 
         .about {
@@ -154,12 +155,12 @@
         }
 
         .about-grid h4 {
-            color: #ffcc00;
+            color: #ff9ca6; /* Turned Soft Red/Pink */
             margin-top: 0;
         }
 
         .about-grid a {
-            color: #ffcc00;
+            color: #ff9ca6; /* Turned Soft Red/Pink */
             text-decoration: none;
         }
 
@@ -177,7 +178,7 @@
         }
 
         /* ==========================================
-           NEW LOGIN & POPUP MODALS FUNCTIONAL STYLING
+           MODALS & INTERACTION STYLING (ADJUSTED)
            ========================================== */
         .simple-popup-overlay {
             position: fixed;
@@ -192,7 +193,7 @@
             border: 2px solid #333;
             box-shadow: 0 4px 25px rgba(0,0,0,0.7);
         }
-        .simple-popup-box h3 { margin-top: 0; color: #ffcc00; text-align: center;}
+        .simple-popup-box h3 { margin-top: 0; color: #ff9ca6; text-align: center;}
         .simple-popup-box label { font-size: 14px; color: #aaa; display: block; margin-top: 10px; }
         .simple-popup-box input {
             width: 100%; padding: 10px; margin: 8px 0 15px 0;
@@ -201,44 +202,56 @@
             font-family: monospace;
         }
         .simple-popup-box button {
-            width: 100%; padding: 12px; background: #ffcc00; color: #000;
+            width: 100%; padding: 12px; background: #ff9ca6; color: #000;
             border: none; border-radius: 4px; cursor: pointer; font-weight: bold;
             font-size: 16px; margin-top: 10px;
         }
-        .simple-popup-box button:hover { background: #e6b800; }
+        .simple-popup-box button:hover { background: #ffb3ba; }
+        
         .close-popup {
             position: absolute; top: 10px; right: 15px;
             background: none; border: none; font-size: 24px; cursor: pointer; color: #fff;
         }
+        
+        /* BUMPED UP NAV BAR LINK SIZES (FIXED SIZE ISSUE) */
         .auth-header-bar {
-            background: #121212; text-align: right; padding: 10px 5%; font-size: 14px; border-bottom: 1px solid #222;
+            background: #121212; 
+            text-align: right; 
+            padding: 15px 5%; 
+            font-size: 18px; /* Increased font size significantly */
+            border-bottom: 1px solid #222;
         }
-        .auth-link { cursor: pointer; text-decoration: underline; color: #ffcc00; margin: 0 5px;}
+        .auth-link { cursor: pointer; text-decoration: underline; color: #ff9ca6; margin: 0 10px; font-weight: bold;}
         .auth-link:hover { color: #fff; }
+        
         .order-history-card {
             border: 1px solid #333; padding: 12px; margin-top: 10px; border-radius: 4px; background: #121212;
         }
+        
         .cart-icon {
-            background: #ffcc00; color: #000; padding: 8px 16px; border-radius: 20px;
+            background: #ff9ca6; color: #000; padding: 8px 16px; border-radius: 20px;
             font-weight: bold; display: inline-block; margin-top: 15px; cursor: pointer;
+            font-size: 16px;
         }
-        .cart-icon:hover { background: #e6b800; }
+        .cart-icon:hover { background: #ffb3ba; }
     </style>
 </head>
 <body>
 
+    <!-- Authentication Top Bar (Now Bigger) -->
     <div class="auth-header-bar" id="authBarContainer">
         <span id="loggedOutState">
             <span class="auth-link" onclick="openPopup('loginPopup')">Log In</span> | 
             <span class="auth-link" onclick="openPopup('signupPopup')">Sign Up</span>
         </span>
         <span id="loggedInState" style="display: none;">
-            Hi, <strong id="displayUsername" style="color:#ffcc00;">User</strong>! 
+            Hi, <strong id="displayUsername" style="color:#ff9ca6;">User</strong>! 
             [<span class="auth-link" onclick="openPopup('historyPopup'); showHistory();">Order History</span>] | 
             <span class="auth-link" style="color: #ff4d4d;" onclick="logoutUser()">Log Out</span>
         </span>
     </div>
 
+    <!-- Header Section -->
     <header>
         <div class="logo">SKZ Goods</div>
         <div class="cart-icon" onclick="toggleCart()">
@@ -247,14 +260,17 @@
     </header>
 
     <main>
+        <!-- Hero Section -->
         <section class="hero">
             <h1># STRAY KIDS GOODS</h1>
             <p>Your softest corner for Stray Kids collections. Find genuine premium photocard expansions prints.</p>
         </section>
 
+        <!-- Products Section -->
         <section class="favorites">
             <h2>Our Favorites</h2>
             <div class="product-grid">
+                <!-- Felix Card -->
                 <div class="product-card">
                     <img src="image_e4aab6.jpg" alt="Felix holding a rose">
                     <h3>The angelic prince -- Felix</h3>
@@ -263,6 +279,7 @@
                     <button class="add-to-cart" onclick="addToCart('Felix - Angelic Prince', 250)">Add to Cart</button>
                 </div>
 
+                <!-- Seungmin Card -->
                 <div class="product-card">
                     <img src="image_e4a2d6.jpg" alt="Seungmin in purple mist">
                     <h3>The soft singer -- Seungmin</h3>
@@ -273,6 +290,7 @@
             </div>
         </section>
 
+        <!-- About Section -->
         <section class="about">
             <h3>About the Shop & Artist</h3>
             <div class="about-grid">
@@ -295,29 +313,33 @@
         </section>
     </main>
 
-    <div id="cart-panel" style="display:none; position: fixed; right:0; top:0; width:320px; height:100%; background:#1e1e1e; border-left: 2px solid #333; box-shadow:-5px 0 15px rgba(0,0,0,0.5); padding:20px; z-index:99999; overflow-y:auto; color:#fff; font-family:monospace;">
+    <!-- Side-out Shopping Cart Panel (Dark-themed, White Text, High Visibility) -->
+    <div id="cart-panel" class="cart-panel" style="display:none; position: fixed; right:0; top:0; width:320px; height:100%; background:#1e1e1e; border-left: 2px solid #333; box-shadow:-5px 0 15px rgba(0,0,0,0.5); padding:20px; z-index:99999; overflow-y:auto; color:#fff; font-family:monospace;">
         <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #333; padding-bottom:10px;">
-            <h3 style="color:#ffcc00; margin:0;">Your Selected Goods</h3>
+            <h3 style="color:#ff9ca6; margin:0;">Your Selected Goods</h3>
             <button onclick="toggleCart()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#fff;">✕</button>
         </div>
         
+        <!-- Cart container inside which names were disappearing -->
         <div id="cart-items" style="margin-top:20px;">
             <p style="color:#aaa;">Your cart is empty.</p>
         </div>
         
         <div style="margin-top:20px; border-top:1px solid #333; padding-top:10px;">
-            <p><strong>Subtotal:</strong> <span id="cart-total" style="color:#ffcc00; font-weight:bold;">0</span> NTD</p>
+            <p><strong>Subtotal:</strong> <span id="cart-total" style="color:#ff9ca6; font-weight:bold;">0</span> NTD</p>
         </div>
 
+        <!-- Checkout Form Block -->
         <div style="margin-top:20px;">
-            <h4 style="color:#ffcc00; border-top: 1px solid #333; padding-top:15px; margin-bottom:10px;">Place Your Order</h4>
+            <h4 style="color:#ff9ca6; border-top: 1px solid #333; padding-top:15px; margin-bottom:10px;">Place Your Order</h4>
             <input type="text" id="customer-name" placeholder="Your Full Name" style="width:100%; padding:8px; margin-bottom:10px; background:#121212; color:#fff; border:1px solid #444; font-family:monospace;">
             <input type="email" id="customer-email" placeholder="Email Address (Auto)" style="width:100%; padding:8px; margin-bottom:10px; background:#121212; color:#888; border:1px solid #444; font-family:monospace;" readonly>
             <textarea id="customer-notes" placeholder="Special Delivery Notes (Optional)" style="width:100%; padding:8px; margin-bottom:10px; background:#121212; color:#fff; border:1px solid #444; resize:none; font-family:monospace; height:60px;"></textarea>
-            <button onclick="processCheckout()" style="width:100%; padding:12px; background:#ffcc00; color:black; border:none; font-weight:bold; cursor:pointer; font-size:16px;">Summon Your Order</button>
+            <button onclick="processCheckout()" style="width:100%; padding:12px; background:#ff9ca6; color:black; border:none; font-weight:bold; cursor:pointer; font-size:16px;">Summon Your Order</button>
         </div>
     </div>
 
+    <!-- SIGN UP POPUP -->
     <div id="signupPopup" class="simple-popup-overlay" style="display: none;">
         <div class="simple-popup-box">
             <button class="close-popup" onclick="closePopup('signupPopup')">&times;</button>
@@ -333,6 +355,7 @@
         </div>
     </div>
 
+    <!-- LOG IN POPUP -->
     <div id="loginPopup" class="simple-popup-overlay" style="display: none;">
         <div class="simple-popup-box">
             <button class="close-popup" onclick="closePopup('loginPopup')">&times;</button>
@@ -346,6 +369,7 @@
         </div>
     </div>
 
+    <!-- ORDER HISTORY POPUP -->
     <div id="historyPopup" class="simple-popup-overlay" style="display: none;">
         <div class="simple-popup-box" style="max-width: 500px; max-height: 70vh; overflow-y: auto;">
             <button class="close-popup" onclick="closePopup('historyPopup')">&times;</button>
@@ -354,6 +378,7 @@
         </div>
     </div>
 
+    <!-- THANK YOU POPUP -->
     <div id="thankyouPopup" class="simple-popup-overlay" style="display: none;">
         <div class="simple-popup-box" style="text-align: center;">
             <span style="font-size: 40px;">🎉</span>
